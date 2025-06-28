@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { UserCircle2, BadgeCheck, XCircle, Loader2, Image } from "lucide-react";
+import { ADMIN_API_BASE, MAIN_API_BASE } from "../config"; // <--- ADD THIS
 
 export default function AdminKYC() {
   const [users, setUsers] = useState([]);
@@ -9,7 +10,7 @@ export default function AdminKYC() {
 
   const fetchUserKYC = async (userId) => {
     try {
-      const res = await fetch(`http://localhost:5001/api/admin/user/${userId}/kyc`);
+      const res = await fetch(`${ADMIN_API_BASE}/api/admin/user/${userId}/kyc`);
       if (!res.ok) return {};
       return await res.json();
     } catch {
@@ -23,7 +24,7 @@ export default function AdminKYC() {
       setError("");
       try {
         const token = localStorage.getItem("adminToken");
-        const res = await fetch("http://localhost:5001/api/admin/users", {
+        const res = await fetch(`${ADMIN_API_BASE}/api/admin/users`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -47,7 +48,7 @@ export default function AdminKYC() {
     setActionLoading(user_id + status);
     try {
       const token = localStorage.getItem("adminToken");
-      const res = await fetch("http://localhost:5001/api/admin/user-kyc-status", {
+      const res = await fetch(`${ADMIN_API_BASE}/api/admin/user-kyc-status`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ user_id, kyc_status: status }),
@@ -111,7 +112,7 @@ export default function AdminKYC() {
                     <td>
                       {u.kyc_selfie ? (
                         <a
-                          href={`http://localhost:5000${u.kyc_selfie}`}
+                          href={`${MAIN_API_BASE}${u.kyc_selfie}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1 px-2 py-1 rounded bg-[#1a2334] text-[#16d79c] font-semibold hover:bg-[#1f2937] transition"
@@ -126,7 +127,7 @@ export default function AdminKYC() {
                     <td>
                       {u.kyc_id_card ? (
                         <a
-                          href={`http://localhost:5000${u.kyc_id_card}`}
+                          href={`${MAIN_API_BASE}${u.kyc_id_card}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1 px-2 py-1 rounded bg-[#1a2334] text-[#3af0ff] font-semibold hover:bg-[#1f2937] transition"
