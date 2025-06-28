@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { UserCircle2, ShieldCheck, XCircle, Loader2, Eye, Trash2, BadgeCheck, AlertTriangle, Image } from "lucide-react";
 
+// SET YOUR DEPLOYED ADMIN BACKEND URL HERE
+const API_BASE = "https://novachain-admin-backend.onrender.com";
+
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,7 +25,7 @@ export default function AdminUsers() {
     setError("");
     try {
       const token = localStorage.getItem("adminToken");
-      const res = await fetch(`http://localhost:5001/api/admin/user/${user_id}`, {
+      const res = await fetch(`${API_BASE}/api/admin/user/${user_id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -40,7 +43,7 @@ export default function AdminUsers() {
     setError("");
     try {
       const token = localStorage.getItem("adminToken");
-      const res = await fetch("http://localhost:5001/api/admin/users", {
+      const res = await fetch(`${API_BASE}/api/admin/users`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -55,7 +58,7 @@ export default function AdminUsers() {
   const fetchWinModes = async () => {
     try {
       const token = localStorage.getItem("adminToken");
-      const res = await fetch("http://localhost:5001/api/admin/users", {
+      const res = await fetch(`${API_BASE}/api/admin/users`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -74,7 +77,8 @@ export default function AdminUsers() {
     setError("");
     try {
       const token = localStorage.getItem("adminToken");
-      const res = await fetch(`http://localhost:5000/api/admin/users/${user_id}/trade-mode`, {
+      // Note: If this endpoint is handled by admin backend, use API_BASE, if by user backend, set correct URL.
+      const res = await fetch(`${API_BASE}/api/admin/users/${user_id}/trade-mode`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ mode: mode === null ? null : (mode ? mode.toUpperCase() : null) }),
@@ -92,7 +96,7 @@ export default function AdminUsers() {
     setActionLoading(user_id + "-kyc");
     try {
       const token = localStorage.getItem("adminToken");
-      const res = await fetch("http://localhost:5001/api/admin/user-kyc-status", {
+      const res = await fetch(`${API_BASE}/api/admin/user-kyc-status`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ user_id, kyc_status }),
@@ -250,7 +254,7 @@ export default function AdminUsers() {
               <div>
                 <div className="font-bold mb-2 text-[#16d79c] flex items-center gap-1"><Image size={14}/>Selfie:</div>
                 {selectedUser.kyc_selfie
-                  ? <img src={`http://localhost:5001/uploads/${selectedUser.kyc_selfie}`}
+                  ? <img src={`${API_BASE}/uploads/${selectedUser.kyc_selfie}`}
                       alt="Selfie" className="max-w-[150px] rounded-xl border-2 border-[#14B8A6] shadow" />
                   : <div className="text-gray-400">No selfie uploaded</div>
                 }
@@ -258,7 +262,7 @@ export default function AdminUsers() {
               <div>
                 <div className="font-bold mb-2 text-[#ffd700] flex items-center gap-1"><Image size={14}/>ID Card:</div>
                 {selectedUser.kyc_id_card
-                  ? <img src={`http://localhost:5001/uploads/${selectedUser.kyc_id_card}`}
+                  ? <img src={`${API_BASE}/uploads/${selectedUser.kyc_id_card}`}
                       alt="ID Card" className="max-w-[150px] rounded-xl border-2 border-[#FFD700] shadow" />
                   : <div className="text-gray-400">No ID uploaded</div>
                 }
