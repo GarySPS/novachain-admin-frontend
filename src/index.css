@@ -225,3 +225,12 @@ body {
     gap: 0.4rem !important;
   }
 }
+
+/* Hide scrollbar for tab bar, keep scroll gesture */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
