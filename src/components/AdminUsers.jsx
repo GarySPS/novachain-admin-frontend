@@ -253,19 +253,17 @@ export default function AdminUsers() {
             <div className="flex flex-wrap gap-6 mb-3">
               <div>
                 <div className="font-bold mb-2 text-[#16d79c] flex items-center gap-1"><Image size={14}/>Selfie:</div>
-                {selectedUser.kyc_selfie
-                  ? <img src={`${API_BASE}/uploads/${selectedUser.kyc_selfie}`}
-                      alt="Selfie" className="max-w-[150px] rounded-xl border-2 border-[#14B8A6] shadow" />
-                  : <div className="text-gray-400">No selfie uploaded</div>
-                }
+{selectedUser.kyc_selfie
+  ? <img src={`https://novachain-backend.onrender.com/uploads/${selectedUser.kyc_selfie}`} alt="Selfie" className="max-w-[150px] rounded-xl border-2 border-[#14B8A6] shadow" />
+  : <div className="text-gray-400">No selfie uploaded</div>
+}
               </div>
               <div>
                 <div className="font-bold mb-2 text-[#ffd700] flex items-center gap-1"><Image size={14}/>ID Card:</div>
-                {selectedUser.kyc_id_card
-                  ? <img src={`${API_BASE}/uploads/${selectedUser.kyc_id_card}`}
-                      alt="ID Card" className="max-w-[150px] rounded-xl border-2 border-[#FFD700] shadow" />
-                  : <div className="text-gray-400">No ID uploaded</div>
-                }
+{selectedUser.kyc_id_card
+  ? <img src={`https://novachain-backend.onrender.com/uploads/${selectedUser.kyc_id_card}`} alt="ID Card" className="max-w-[150px] rounded-xl border-2 border-[#FFD700] shadow" />
+  : <div className="text-gray-400">No ID uploaded</div>
+}
               </div>
             </div>
             <div className="flex gap-3 justify-center mt-6">
