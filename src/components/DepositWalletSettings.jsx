@@ -10,7 +10,7 @@ const supportedCoins = [
   { symbol: "XRP", name: "Ripple" },
 ];
 
-const API_URL = "http://localhost:5001/api/admin/deposit-addresses";
+const API_URL = "https://novachain-admin-backend.onrender.com/api/admin/deposit-addresses";
 
 export default function DepositWalletSettings() {
   const [wallets, setWallets] = useState(
