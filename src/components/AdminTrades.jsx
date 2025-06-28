@@ -53,7 +53,7 @@ export default function AdminTrades() {
               <tr>
                 <th>Trade ID</th>
                 <th>User ID</th>
-                <th>Type</th>
+                <th>Direction</th>
                 <th>Amount</th>
                 <th>Result</th>
                 <th>Duration</th>
@@ -75,7 +75,7 @@ export default function AdminTrades() {
                 >
                   <td>{trade.id}</td>
                   <td>{trade.user_id}</td>
-                  <td className="capitalize">{trade.type}</td>
+                  <td className="capitalize">{trade.direction}</td>
                   <td>
                     <span className="font-bold text-[#FFD700]">
                       {parseFloat(trade.amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}
