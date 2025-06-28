@@ -16,9 +16,11 @@ export default function AdminTrades() {
     setError("");
     try {
       const token = localStorage.getItem("adminToken");
-      const res = await fetch("https://novachain-admin-backend.onrender.com/api/admin/trades", {
+      const API_BASE = process.env.REACT_APP_ADMIN_API_BASE || "http://localhost:5001";
+const res = await fetch(`${API_BASE}/api/admin/trades`, {
   headers: { Authorization: `Bearer ${token}` },
 });
+
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to fetch trades");
