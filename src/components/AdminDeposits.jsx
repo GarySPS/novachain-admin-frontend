@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CheckCircle2, XCircle, Loader2, Image } from "lucide-react";
+import { MAIN_API_BASE } from "../config";
+
 
 export default function AdminDeposits() {
   const [deposits, setDeposits] = useState([]);
@@ -17,7 +19,7 @@ export default function AdminDeposits() {
     setError("");
     try {
       const token = localStorage.getItem("adminToken");
-      const res = await fetch("http://localhost:5000/api/deposits", {
+      const res = await fetch(`${MAIN_API_BASE}/api/deposits`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -35,7 +37,7 @@ export default function AdminDeposits() {
     try {
       const token = localStorage.getItem("adminToken");
       const status = action === "approve" ? "approved" : "rejected";
-      const res = await fetch(`http://localhost:5000/api/deposit/${id}/status`, {
+      const res = await fetch(`${MAIN_API_BASE}/api/deposit/${id}/status`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -117,7 +119,7 @@ export default function AdminDeposits() {
                         title="View deposit slip"
                       >
                         <img
-                          src={`http://localhost:5000/uploads/${d.screenshot}`}
+                          src={`${MAIN_API_BASE}/uploads/${d.screenshot}`}
                           alt="Deposit Screenshot"
                           className="rounded-md shadow border border-[#ffd70044] object-cover w-[48px] h-[48px] hover:scale-105 transition"
                         />
