@@ -21,7 +21,7 @@ export default function AdminLogin() {
     if (!emailRegex.test(email)) return setError('Please enter a valid email address.');
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5001/api/admin/login', {
+      const response = await fetch('https://novachain-admin-backend.onrender.com/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
