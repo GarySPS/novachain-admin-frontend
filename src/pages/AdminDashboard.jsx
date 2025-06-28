@@ -23,7 +23,7 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-start pt-2 pb-8">
       {/* Premium Glass Tab Bar */}
-      <div className="flex gap-4 mb-8 bg-gradient-to-r from-[#1a243c]/80 via-[#21253e]/90 to-[#131622]/90 rounded-2xl px-2 py-2 shadow-2xl backdrop-blur-[2.5px] w-full max-w-4xl border border-white/5 items-center">
+      <div className="flex flex-nowrap overflow-x-auto gap-4 mb-8 bg-gradient-to-r from-[#1a243c]/80 via-[#21253e]/90 to-[#131622]/90 rounded-2xl px-2 py-2 shadow-2xl backdrop-blur-[2.5px] w-full max-w-4xl border border-white/5 items-center no-scrollbar">
   {tabList.map(tab => (
     <button
       key={tab.key}
