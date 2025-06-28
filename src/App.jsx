@@ -42,12 +42,15 @@ function AnimatedPage({ children }) {
   );
 }
 
-// Premium admin layout
+// Premium admin layout, including nav/tabs if you want globally:
 function AdminLayout({ children }) {
   return (
     <div className="min-h-screen w-full relative overflow-x-hidden font-sans text-slate-200 bg-transparent">
       <BgGradient />
       <div className="relative z-10">
+        {/* Uncomment these lines to show nav/tabs everywhere */}
+        {/* <NavBar /> */}
+        {/* <AdminTabsBar /> */}
         <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
           <div className="rounded-2xl bg-gradient-to-b from-white/5 via-[#191e29]/80 to-[#101622]/90 shadow-2xl p-6 min-h-[65vh]">
             {children}
@@ -59,9 +62,13 @@ function AdminLayout({ children }) {
 }
 
 function App() {
-  const token = localStorage.getItem('adminToken');
-  const Protected = ({ children }) => (token ? <AdminLayout>{children}</AdminLayout> : <Navigate to="/" />);
   const location = useLocation();
+
+  // Move token check INSIDE the component to always be up-to-date
+  const Protected = ({ children }) => {
+    const token = localStorage.getItem('adminToken');
+    return token ? <AdminLayout>{children}</AdminLayout> : <Navigate to="/" replace />;
+  };
 
   return (
     <>
