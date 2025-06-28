@@ -12,23 +12,23 @@ export default function AdminTrades() {
   }, []);
 
   const fetchTrades = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const token = localStorage.getItem("adminToken");
-      const API_BASE = process.env.REACT_APP_ADMIN_API_BASE || "http://localhost:5001";
-      const res = await fetch(`${API_BASE}/api/trades`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+  setLoading(true);
+  setError("");
+  try {
+    const token = localStorage.getItem("adminToken");
+    const API_BASE = process.env.REACT_APP_ADMIN_API_BASE || "http://localhost:5001";
+    const res = await fetch(`${API_BASE}/api/admin/trades`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to fetch trades");
+    setTrades(data);
+  } catch (err) {
+    setError(err.message || "Network error");
+  }
+  setLoading(false);
+};
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to fetch trades");
-      setTrades(data);
-    } catch (err) {
-      setError(err.message || "Network error");
-    }
-    setLoading(false);
-  };
 
   return (
     <div className="max-w-6xl mx-auto mt-10 px-2 sm:px-6 py-8 rounded-2xl shadow-2xl bg-gradient-to-br from-white/5 via-[#191e29]/80 to-[#181b25]/90 border border-white/5">
