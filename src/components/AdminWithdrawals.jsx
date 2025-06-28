@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Loader2, CheckCircle2, XCircle, BadgeCheck, Banknote, ArrowDownLeft, ArrowUpRight } from "lucide-react";
+import { Loader2, CheckCircle2, XCircle, BadgeCheck, ArrowUpRight } from "lucide-react";
+
+// CHANGE THIS to your real backend URL:
+const API_BASE = "https://novachain-backend.onrender.com"; // <-- main user backend, adjust if needed
 
 export default function AdminWithdrawals() {
   const [withdrawals, setWithdrawals] = useState([]);
@@ -17,7 +20,7 @@ export default function AdminWithdrawals() {
     setError("");
     try {
       const token = localStorage.getItem("adminToken");
-      const res = await fetch("http://localhost:5000/api/admin/withdrawals", {
+      const res = await fetch(`${API_BASE}/api/admin/withdrawals`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -35,7 +38,7 @@ export default function AdminWithdrawals() {
     try {
       const token = localStorage.getItem("adminToken");
       const status = action === "approve" ? "approved" : "rejected";
-      const res = await fetch(`http://localhost:5000/api/admin/withdrawals/${id}/status`, {
+      const res = await fetch(`${API_BASE}/api/admin/withdrawals/${id}/status`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,6 +54,7 @@ export default function AdminWithdrawals() {
     }
     setActionLoading(null);
   };
+
 
   return (
     <div className="max-w-6xl mx-auto mt-10 px-2 sm:px-6 py-8 rounded-2xl shadow-2xl bg-gradient-to-br from-white/5 via-[#191e29]/80 to-[#181b25]/90 border border-white/5">
