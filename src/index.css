@@ -1,0 +1,88 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  background: #15192a;
+  font-family: 'Inter', 'Plus Jakarta Sans', 'Segoe UI', Arial, sans-serif;
+  color-scheme: dark;
+}
+
+/* Main background for admin - subtle gradient if no bg image */
+body {
+  background: linear-gradient(120deg, #1a2636 0%, #181c25 60%, #11151c 100%);
+  min-height: 100vh;
+  color: #e2eafc;
+}
+
+/* Premium admin table style */
+.admin-table {
+  width: 100%;
+  background: rgba(24, 27, 37, 0.98);
+  color: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 32px #0006;
+  margin-bottom: 0;
+  backdrop-filter: blur(2.5px);
+}
+
+.admin-table th, .admin-table td {
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.admin-table th {
+  background: rgba(35, 40, 54, 0.96);
+  color: #ffd700;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  border-bottom: 2px solid #232836;
+}
+
+.admin-table tr {
+  border-bottom: 1px solid #262a38;
+  transition: background 0.16s;
+}
+
+.admin-table tr:hover {
+  background: rgba(35, 40, 54, 0.87);
+}
+
+/* Responsive table styles */
+@media (max-width: 768px) {
+  .admin-table th, .admin-table td {
+    padding: 8px 6px;
+    font-size: 12px;
+  }
+  .min-h-[420px] {
+    min-height: 260px !important;
+  }
+  .p-8 {
+    padding: 10px !important;
+  }
+}
+
+/* Smooth card/glass containers for all admin panels */
+.admin-card, .glass-card {
+  background: rgba(28, 34, 50, 0.94);
+  border-radius: 20px;
+  box-shadow: 0 6px 36px #0007;
+  backdrop-filter: blur(3.5px);
+  padding: 2.5rem;
+  color: #e6eaf8;
+}
+
+/* Gold accent for NovaChain brand */
+.gold {
+  color: #ffd700;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+/* Optional: premium font load */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');

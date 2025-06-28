@@ -1,0 +1,108 @@
+/* src/AdminLogin.css */
+/* You may safely delete this file if you ONLY use Tailwind in AdminLogin.jsx! */
+
+/* Premium NovaChain Admin Login Styles */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Poppins:wght@700&display=swap');
+
+.admin-login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(120deg, #1a2636 0%, #181c25 60%, #11151c 100%);
+  padding: 1.25rem;
+}
+
+.admin-login-box {
+  background: rgba(30, 39, 54, 0.98);
+  padding: 2.7rem 2.2rem;
+  border-radius: 1.1rem;
+  width: 100%;
+  max-width: 410px;
+  box-shadow: 0 8px 36px #16d79c22, 0 1.5px 16px #0004;
+  backdrop-filter: blur(3.5px);
+}
+
+.admin-login-title {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #ffd700;
+  margin-bottom: 1.6rem;
+  text-align: center;
+  font-family: 'Poppins', 'Inter', Arial, sans-serif;
+  letter-spacing: 0.01em;
+  text-shadow: 0 3px 18px #1113, 0 2px 4px #ffd70011;
+}
+
+.admin-login-form label {
+  display: block;
+  color: #9ca3af;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  font-size: 0.97rem;
+}
+
+.admin-login-form input {
+  width: 100%;
+  padding: 0.62rem 0.9rem;
+  border-radius: 0.58rem;
+  border: 1px solid #283046;
+  background: #202335;
+  color: #f1f5f9;
+  font-size: 1.03rem;
+  outline-offset: 2px;
+  margin-bottom: 1.18rem;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  transition: border-color 0.24s, box-shadow 0.24s;
+  box-shadow: 0 1.5px 6px #16d79c08;
+}
+
+.admin-login-form input:focus {
+  border-color: #16d79c;
+  background: #181b25;
+  box-shadow: 0 2px 10px #16d79c22;
+}
+
+.admin-login-form button {
+  width: 100%;
+  background: linear-gradient(90deg, #FFD700 0%, #16d79c 100%);
+  color: #232836;
+  font-weight: 800;
+  padding: 0.82rem 0;
+  border-radius: 0.75rem;
+  font-size: 1.18rem;
+  cursor: pointer;
+  border: none;
+  font-family: 'Poppins', 'Inter', Arial, sans-serif;
+  letter-spacing: 0.015em;
+  box-shadow: 0 2px 14px #ffd70015;
+  transition: background 0.22s, box-shadow 0.2s;
+}
+
+.admin-login-form button:hover:enabled {
+  background: linear-gradient(90deg, #16d79c 0%, #FFD700 100%);
+  box-shadow: 0 4px 22px #16d79c22;
+}
+
+.admin-login-form button:disabled {
+  background: #b5c2be;
+  cursor: not-allowed;
+  opacity: 0.74;
+}
+
+/* Responsive tweaks */
+@media (max-width: 500px) {
+  .admin-login-box {
+    padding: 1.15rem 0.6rem;
+    border-radius: 0.8rem;
+    max-width: 96vw;
+  }
+  .admin-login-title { font-size: 1.27rem; }
+}
+
+/* Error & utility classes (keep for reuse or compatibility) */
+.bg-red-600 { background-color: #dc2626 !important; }
+.text-white { color: #fff !important; }
+.p-2 { padding: 0.5rem !important; }
+.rounded { border-radius: 0.5rem !important; }
+.mb-4 { margin-bottom: 1rem !important; }
