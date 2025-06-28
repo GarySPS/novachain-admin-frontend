@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Loader2, CheckCircle2, XCircle, BadgeCheck, ArrowUpRight } from "lucide-react";
 
-// CHANGE THIS to your real backend URL:
-const API_BASE = "https://novachain-backend.onrender.com"; // <-- main user backend, adjust if needed
+// Correct admin backend
+const API_BASE = process.env.REACT_APP_ADMIN_API_BASE || "https://novachain-admin-backend.onrender.com";
 
 export default function AdminWithdrawals() {
   const [withdrawals, setWithdrawals] = useState([]);
@@ -20,7 +20,7 @@ export default function AdminWithdrawals() {
     setError("");
     try {
       const token = localStorage.getItem("adminToken");
-      const res = await fetch(`${API_BASE}/api/admin/withdrawals`, {
+      const res = await fetch(`${API_BASE}/api/withdrawals`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -37,14 +37,13 @@ export default function AdminWithdrawals() {
     setError("");
     try {
       const token = localStorage.getItem("adminToken");
-      const status = action === "approve" ? "approved" : "rejected";
-      const res = await fetch(`${API_BASE}/api/admin/withdrawals/${id}/status`, {
+      const url =
+        action === "approve"
+          ? `${API_BASE}/api/admin/withdrawals/${id}/approve`
+          : `${API_BASE}/api/admin/withdrawals/${id}/deny`;
+      const res = await fetch(url, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ status })
+        headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || `Failed to ${action} withdrawal`);
@@ -54,7 +53,6 @@ export default function AdminWithdrawals() {
     }
     setActionLoading(null);
   };
-
 
   return (
     <div className="max-w-6xl mx-auto mt-10 px-2 sm:px-6 py-8 rounded-2xl shadow-2xl bg-gradient-to-br from-white/5 via-[#191e29]/80 to-[#181b25]/90 border border-white/5">

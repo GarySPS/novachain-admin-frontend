@@ -17,7 +17,7 @@ export default function AdminTrades() {
   try {
     const token = localStorage.getItem("adminToken");
     const API_BASE = process.env.REACT_APP_ADMIN_API_BASE || "http://localhost:5001";
-    const res = await fetch(`${API_BASE}/api/admin/trades`, {
+    const res = await fetch(`${API_BASE}/api/trades`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();

@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { CheckCircle2, XCircle, Loader2, Image } from "lucide-react";
-import { MAIN_API_BASE } from "../config";
 
+// Config for API
+const API_BASE = process.env.REACT_APP_ADMIN_API_BASE || "https://novachain-admin-backend.onrender.com";
+// The deposit slip images are always from the **main user backend**
+const IMAGE_BASE = "https://novachain-backend.onrender.com";
 
 export default function AdminDeposits() {
   const [deposits, setDeposits] = useState([]);
@@ -19,7 +22,7 @@ export default function AdminDeposits() {
     setError("");
     try {
       const token = localStorage.getItem("adminToken");
-      const res = await fetch(`${MAIN_API_BASE}/api/deposits`, {
+      const res = await fetch(`${API_BASE}/api/deposits`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -36,14 +39,13 @@ export default function AdminDeposits() {
     setError("");
     try {
       const token = localStorage.getItem("adminToken");
-      const status = action === "approve" ? "approved" : "rejected";
-      const res = await fetch(`${MAIN_API_BASE}/api/deposit/${id}/status`, {
+      const url =
+        action === "approve"
+          ? `${API_BASE}/api/admin/deposits/${id}/approve`
+          : `${API_BASE}/api/admin/deposits/${id}/deny`;
+      const res = await fetch(url, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ status })
+        headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || `Failed to ${action} deposit`);
@@ -112,14 +114,14 @@ export default function AdminDeposits() {
                   <td>
                     {d.screenshot ? (
                       <a
-                        href={`http://localhost:5000/uploads/${d.screenshot}`}
+                        href={`${IMAGE_BASE}/uploads/${d.screenshot}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-block"
                         title="View deposit slip"
                       >
                         <img
-                          src={`${MAIN_API_BASE}/uploads/${d.screenshot}`}
+                          src={`${IMAGE_BASE}/uploads/${d.screenshot}`}
                           alt="Deposit Screenshot"
                           className="rounded-md shadow border border-[#ffd70044] object-cover w-[48px] h-[48px] hover:scale-105 transition"
                         />
