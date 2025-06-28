@@ -25,17 +25,19 @@ export default function NavBar() {
           ADMIN
         </span>
       </div>
-      {/* Optional: Enable this for quick logout */}
-      {/* 
+
+      {/* Logout Button */}
       <button
-        onClick={() => { localStorage.removeItem('adminToken'); window.location.href = '/'; }}
+        onClick={() => {
+          localStorage.removeItem('adminToken');
+          window.location.href = '/';
+        }}
         className="flex items-center gap-1 bg-gradient-to-r from-[#FFD700] to-[#16d79c] text-[#232836] font-bold rounded-xl px-4 py-2 shadow-lg hover:opacity-90 transition"
         title="Logout"
       >
         <LogOut size={20} />
         Logout
       </button>
-      */}
     </header>
   );
 }
