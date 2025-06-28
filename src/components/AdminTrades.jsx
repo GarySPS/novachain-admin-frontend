@@ -16,7 +16,8 @@ export default function AdminTrades() {
   setError("");
   try {
     const token = localStorage.getItem("adminToken");
-    const API_BASE = process.env.REACT_APP_ADMIN_API_BASE || "http://localhost:5001";
+    // Always default to the deployed API if env not present
+    const API_BASE = process.env.REACT_APP_ADMIN_API_BASE || "https://novachain-admin-backend.onrender.com";
     const res = await fetch(`${API_BASE}/api/trades`, {
       headers: { Authorization: `Bearer ${token}` },
     });
