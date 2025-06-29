@@ -142,7 +142,7 @@ export default function AdminUsers() {
           <span className="text-yellow-200 font-bold">Loading users...</span>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl">
+        <div className="overflow-x-auto rounded-xl max-w-full">
           <table className="admin-table min-w-[1200px]">
             <thead>
               <tr>
