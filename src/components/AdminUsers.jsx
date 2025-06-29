@@ -245,11 +245,11 @@ export default function AdminUsers() {
       {/* KYC Modal */}
       {showKycModal && selectedUser && (
         <div className="fixed inset-0 bg-black/70 z-[99] flex items-center justify-center">
-          <div
-  className="bg-gradient-to-br from-white/10 via-[#181b25]/90 to-[#222b3a]/90 border border-[#16d79c44] rounded-2xl shadow-2xl
-    px-4 sm:px-8 py-4 sm:py-6 w-[98vw] max-w-lg max-h-[90vh] overflow-y-auto relative"
-  style={{ overscrollBehavior: 'contain' }}
->
+  <div
+    className="bg-gradient-to-br from-white/10 via-[#181b25]/90 to-[#222b3a]/90 border border-[#16d79c44] rounded-2xl shadow-2xl
+    w-full max-w-lg mx-2 relative flex flex-col max-h-[90vh] overflow-y-auto"
+    style={{ overscrollBehavior: 'contain' }}
+  >          
               <h3 className="flex items-center gap-2 text-lg font-bold text-[#ffd700] mb-5">
               <ShieldCheck size={19} className="text-[#16d79c]" />
               KYC Documents for User ID {selectedUser.id}
