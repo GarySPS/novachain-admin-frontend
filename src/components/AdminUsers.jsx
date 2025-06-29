@@ -241,80 +241,82 @@ export default function AdminUsers() {
             </table>
           </div>
         )}
-        {/* KYC Modal OUTSIDE the main page container */}
-        {showKycModal && selectedUser && (
-          <div className="fixed inset-0 bg-black/70 z-[99] flex items-center justify-center">
-            <div
-              className="bg-gradient-to-br from-white/10 via-[#181b25]/90 to-[#222b3a]/90 border border-[#16d79c44] rounded-2xl shadow-2xl
-                w-full max-w-lg mx-2 relative flex flex-col max-h-[90vh] overflow-y-auto"
-              style={{ overscrollBehavior: 'contain' }}
-            >          
-              <h3 className="flex items-center gap-2 text-lg font-bold text-[#ffd700] mb-5 mt-4 px-4">
-                <ShieldCheck size={19} className="text-[#16d79c]" />
-                KYC Documents for User ID {selectedUser.id}
-              </h3>
-              <div className="w-full flex flex-col sm:flex-row gap-4 mb-3 px-4">
-                {/* Selfie Image */}
-                <div className="flex-1 flex flex-col items-center">
-                  <span className="font-bold mb-1 text-[#16d79c] flex items-center gap-1"><Image size={14}/>Selfie:</span>
-                  {selectedUser.kyc_selfie
-                    ? (
-                      <img
-                        src={`https://novachain-backend.onrender.com/uploads/${selectedUser.kyc_selfie}`}
-                        alt="Selfie"
-                        className="w-full max-w-[180px] sm:max-w-[160px] rounded-xl border-2 border-[#14B8A6] shadow object-cover aspect-[4/5]"
-                      />
-                    )
-                    : <div className="text-gray-400">No selfie uploaded</div>
-                  }
-                </div>
-                {/* ID Card Image */}
-                <div className="flex-1 flex flex-col items-center">
-                  <span className="font-bold mb-1 text-[#ffd700] flex items-center gap-1"><Image size={14}/>ID Card:</span>
-                  {selectedUser.kyc_id_card
-                    ? (
-                      <img
-                        src={`https://novachain-backend.onrender.com/uploads/${selectedUser.kyc_id_card}`}
-                        alt="ID Card"
-                        className="w-full max-w-[180px] sm:max-w-[160px] rounded-xl border-2 border-[#FFD700] shadow object-cover aspect-[4/5]"
-                      />
-                    )
-                    : <div className="text-gray-400">No ID uploaded</div>
-                  }
-                </div>
-              </div>
-              <div className="flex gap-3 justify-center mt-6 mb-6 px-4">
-                {(selectedUser.kyc_status !== "approved") && (
-                  <button
-                    onClick={() => handleKYCStatus(selectedUser.id, "approved")}
-                    disabled={actionLoading === selectedUser.id + "-kyc"}
-                    className="px-4 py-2 bg-gradient-to-r from-[#16d79c] to-[#ffd700] text-[#181b25] rounded-lg font-bold shadow hover:opacity-90 transition flex items-center gap-1"
-                  >
-                    {actionLoading === selectedUser.id + "-kyc"
-                      ? <Loader2 className="animate-spin" size={15} />
-                      : <BadgeCheck size={15} />}
-                    {actionLoading === selectedUser.id + "-kyc" ? "" : "Approve"}
-                  </button>
-                )}
-                {(selectedUser.kyc_status !== "rejected") && (
-                  <button
-                    onClick={() => handleKYCStatus(selectedUser.id, "rejected")}
-                    disabled={actionLoading === selectedUser.id + "-kyc"}
-                    className="px-4 py-2 bg-gradient-to-r from-[#f34e6d] to-[#ffd700] text-[#181b25] rounded-lg font-bold shadow hover:opacity-90 transition flex items-center gap-1"
-                  >
-                    <XCircle size={15} /> Reject
-                  </button>
-                )}
-                <button
-                  onClick={() => setShowKycModal(false)}
-                  className="px-4 py-2 bg-gradient-to-r from-[#a5b4fc] to-[#232836] text-[#232836] rounded-lg font-bold shadow hover:opacity-90 transition"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
+
+{/* KYC Modal -- always outside main content */}
+{showKycModal && selectedUser && (
+  <div className="fixed inset-0 bg-black/70 z-[99] flex items-center justify-center overflow-y-auto">
+    <div
+      className="bg-gradient-to-br from-white/10 via-[#181b25]/90 to-[#222b3a]/90 border border-[#16d79c44] rounded-2xl shadow-2xl
+        w-full max-w-lg mx-2 relative flex flex-col max-h-[90vh] overflow-y-auto"
+      style={{ overscrollBehavior: 'contain' }}
+    >          
+      <h3 className="flex items-center gap-2 text-lg font-bold text-[#ffd700] mb-5 mt-4 px-4">
+        <ShieldCheck size={19} className="text-[#16d79c]" />
+        KYC Documents for User ID {selectedUser.id}
+      </h3>
+      <div className="w-full flex flex-col sm:flex-row gap-4 mb-3 px-4">
+        {/* Selfie Image */}
+        <div className="flex-1 flex flex-col items-center">
+          <span className="font-bold mb-1 text-[#16d79c] flex items-center gap-1"><Image size={14}/>Selfie:</span>
+          {selectedUser.kyc_selfie
+            ? (
+              <img
+                src={`https://novachain-backend.onrender.com/uploads/${selectedUser.kyc_selfie}`}
+                alt="Selfie"
+                className="w-full max-w-[180px] sm:max-w-[160px] rounded-xl border-2 border-[#14B8A6] shadow object-cover aspect-[4/5]"
+              />
+            )
+            : <div className="text-gray-400">No selfie uploaded</div>
+          }
+        </div>
+        {/* ID Card Image */}
+        <div className="flex-1 flex flex-col items-center">
+          <span className="font-bold mb-1 text-[#ffd700] flex items-center gap-1"><Image size={14}/>ID Card:</span>
+          {selectedUser.kyc_id_card
+            ? (
+              <img
+                src={`https://novachain-backend.onrender.com/uploads/${selectedUser.kyc_id_card}`}
+                alt="ID Card"
+                className="w-full max-w-[180px] sm:max-w-[160px] rounded-xl border-2 border-[#FFD700] shadow object-cover aspect-[4/5]"
+              />
+            )
+            : <div className="text-gray-400">No ID uploaded</div>
+          }
+        </div>
+      </div>
+      <div className="flex gap-3 justify-center mt-6 mb-6 px-4">
+        {(selectedUser.kyc_status !== "approved") && (
+          <button
+            onClick={() => handleKYCStatus(selectedUser.id, "approved")}
+            disabled={actionLoading === selectedUser.id + "-kyc"}
+            className="px-4 py-2 bg-gradient-to-r from-[#16d79c] to-[#ffd700] text-[#181b25] rounded-lg font-bold shadow hover:opacity-90 transition flex items-center gap-1"
+          >
+            {actionLoading === selectedUser.id + "-kyc"
+              ? <Loader2 className="animate-spin" size={15} />
+              : <BadgeCheck size={15} />}
+            {actionLoading === selectedUser.id + "-kyc" ? "" : "Approve"}
+          </button>
         )}
+        {(selectedUser.kyc_status !== "rejected") && (
+          <button
+            onClick={() => handleKYCStatus(selectedUser.id, "rejected")}
+            disabled={actionLoading === selectedUser.id + "-kyc"}
+            className="px-4 py-2 bg-gradient-to-r from-[#f34e6d] to-[#ffd700] text-[#181b25] rounded-lg font-bold shadow hover:opacity-90 transition flex items-center gap-1"
+          >
+            <XCircle size={15} /> Reject
+          </button>
+        )}
+        <button
+          onClick={() => setShowKycModal(false)}
+          className="px-4 py-2 bg-gradient-to-r from-[#a5b4fc] to-[#232836] text-[#232836] rounded-lg font-bold shadow hover:opacity-90 transition"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
       </div>
     </>
   );
