@@ -250,22 +250,36 @@ export default function AdminUsers() {
               <ShieldCheck size={19} className="text-[#16d79c]" />
               KYC Documents for User ID {selectedUser.id}
             </h3>
-            <div className="flex flex-wrap gap-6 mb-3">
-              <div>
-                <div className="font-bold mb-2 text-[#16d79c] flex items-center gap-1"><Image size={14}/>Selfie:</div>
-{selectedUser.kyc_selfie
-  ? <img src={`https://novachain-backend.onrender.com/uploads/${selectedUser.kyc_selfie}`} alt="Selfie" className="max-w-[150px] rounded-xl border-2 border-[#14B8A6] shadow" />
-  : <div className="text-gray-400">No selfie uploaded</div>
-}
-              </div>
-              <div>
-                <div className="font-bold mb-2 text-[#ffd700] flex items-center gap-1"><Image size={14}/>ID Card:</div>
-{selectedUser.kyc_id_card
-  ? <img src={`https://novachain-backend.onrender.com/uploads/${selectedUser.kyc_id_card}`} alt="ID Card" className="max-w-[150px] rounded-xl border-2 border-[#FFD700] shadow" />
-  : <div className="text-gray-400">No ID uploaded</div>
-}
-              </div>
-            </div>
+            <div className="w-full flex flex-col sm:flex-row gap-4 mb-3">
+  {/* Selfie Image */}
+  <div className="flex-1 flex flex-col items-center">
+    <span className="font-bold mb-1 text-[#16d79c] flex items-center gap-1"><Image size={14}/>Selfie:</span>
+    {selectedUser.kyc_selfie
+      ? (
+        <img
+          src={`https://novachain-backend.onrender.com/uploads/${selectedUser.kyc_selfie}`}
+          alt="Selfie"
+          className="w-full max-w-[180px] sm:max-w-[160px] rounded-xl border-2 border-[#14B8A6] shadow object-cover aspect-[4/5]"
+        />
+      )
+      : <div className="text-gray-400">No selfie uploaded</div>
+    }
+  </div>
+  {/* ID Card Image */}
+  <div className="flex-1 flex flex-col items-center">
+    <span className="font-bold mb-1 text-[#ffd700] flex items-center gap-1"><Image size={14}/>ID Card:</span>
+    {selectedUser.kyc_id_card
+      ? (
+        <img
+          src={`https://novachain-backend.onrender.com/uploads/${selectedUser.kyc_id_card}`}
+          alt="ID Card"
+          className="w-full max-w-[180px] sm:max-w-[160px] rounded-xl border-2 border-[#FFD700] shadow object-cover aspect-[4/5]"
+        />
+      )
+      : <div className="text-gray-400">No ID uploaded</div>
+    }
+  </div>
+</div>
             <div className="flex gap-3 justify-center mt-6">
               {(selectedUser.kyc_status !== "approved") && (
                 <button
