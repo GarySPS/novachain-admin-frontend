@@ -13,6 +13,14 @@ export default function AdminUsers() {
   const [showKycModal, setShowKycModal] = useState(false);
   const [userWinModes, setUserWinModes] = useState({});
 
+  function resolveKYCUrl(raw) {
+  if (!raw) return null;
+  if (raw.startsWith("http")) return raw;
+  if (raw.startsWith("/uploads/")) return `https://novachain-backend.onrender.com${raw}`;
+  return `https://novachain-backend.onrender.com/uploads/${raw}`;
+}
+
+
   useEffect(() => {
     fetchUsers();
     fetchWinModes();
@@ -261,10 +269,10 @@ export default function AdminUsers() {
           {selectedUser.kyc_selfie
             ? (
               <img
-                src={`https://novachain-backend.onrender.com/uploads/${selectedUser.kyc_selfie}`}
-                alt="Selfie"
-                className="w-full max-w-[180px] sm:max-w-[160px] rounded-xl border-2 border-[#14B8A6] shadow object-cover aspect-[4/5]"
-              />
+  src={resolveKYCUrl(selectedUser.kyc_selfie)}
+  alt="Selfie"
+  className="w-full max-w-[180px] sm:max-w-[160px] rounded-xl border-2 border-[#14B8A6] shadow object-cover aspect-[4/5]"
+/>
             )
             : <div className="text-gray-400">No selfie uploaded</div>
           }
@@ -275,10 +283,11 @@ export default function AdminUsers() {
           {selectedUser.kyc_id_card
             ? (
               <img
-                src={`https://novachain-backend.onrender.com/uploads/${selectedUser.kyc_id_card}`}
-                alt="ID Card"
-                className="w-full max-w-[180px] sm:max-w-[160px] rounded-xl border-2 border-[#FFD700] shadow object-cover aspect-[4/5]"
-              />
+  src={resolveKYCUrl(selectedUser.kyc_id_card)}
+  alt="ID Card"
+  className="w-full max-w-[180px] sm:max-w-[160px] rounded-xl border-2 border-[#FFD700] shadow object-cover aspect-[4/5]"
+/>
+
             )
             : <div className="text-gray-400">No ID uploaded</div>
           }
