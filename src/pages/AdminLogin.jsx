@@ -1,6 +1,5 @@
-// src/pages/AdminLogin.jsx
 import React, { useState, useRef, useEffect } from "react";
-import { KeyRound, Mail } from "lucide-react";
+import { KeyRound, Mail, Lock } from "lucide-react";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
@@ -39,32 +38,25 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#121725] via-[#192032] to-[#181b25] px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#28203c] via-[#403153] to-[#1a2032]">
       <div
         className="
-          w-full max-w-[380px] flex flex-col justify-center items-center
-          p-0 rounded-2xl shadow-[0_8px_40px_0_rgba(8,16,24,0.37)]
-          border border-[#212941]/60
-          bg-gradient-to-b from-[#23294aee] via-[#181b25d6] to-[#181b25f2]
-          backdrop-blur-[6px] overflow-hidden
-        "
+          w-full max-w-[390px] rounded-[2.5rem] shadow-2xl p-0 border-0 flex flex-col items-center
+          bg-white/10 backdrop-blur-[12px] overflow-hidden"
         style={{
-          boxShadow: "0 4px 48px 0 #191d33cc, 0 1.5px 0 #ffd70070 inset",
-          border: "1.5px solid #2e354a",
+          boxShadow: "0 8px 40px 0 rgba(44,34,68,0.32), 0 1.5px 0 #fff3 inset",
         }}
       >
-        {/* Content Wrapper for Perfect Centering */}
-        <div className="flex flex-col items-center justify-center px-7 py-10 w-full h-full">
-          {/* Logo + Brand */}
-          <div className="flex items-center gap-3 mb-5">
-            <span className="rounded-full bg-[#1e2236] p-2.5 shadow-lg border border-[#ffd70033] flex items-center justify-center">
-              <KeyRound size={30} className="text-[#FFD700]" />
-            </span>
-            <span className="text-[1.7rem] font-extrabold tracking-tight bg-gradient-to-r from-[#ffd700] to-[#16d79c] bg-clip-text text-transparent">
-              NovaChain Admin
-            </span>
+        <div className="w-full flex flex-col items-center px-10 py-10">
+          {/* Avatar/Logo */}
+          <div className="flex flex-col items-center gap-3 mb-5">
+            <div className="rounded-full bg-white/20 p-4 mb-2">
+              <KeyRound size={40} className="text-white/80" />
+            </div>
+            {/* Optional: <img src="..." /> */}
           </div>
-          <h1 className="text-2xl font-black text-white/90 mb-6 text-center drop-shadow-lg">
+          {/* Title */}
+          <h1 className="text-2xl font-black text-white/90 mb-7 text-center drop-shadow-lg">
             Secure Admin Login
           </h1>
 
@@ -75,68 +67,53 @@ export default function AdminLogin() {
             </div>
           )}
 
-          {/* FORM: Centered, fixed width */}
-          <form className="w-full flex flex-col gap-5 items-center justify-center" onSubmit={handleSubmit} autoComplete="on">
+          <form className="w-full flex flex-col gap-6" onSubmit={handleSubmit} autoComplete="on">
             {/* Email */}
-            <div className="w-full">
-              <label htmlFor="email" className="block text-[#b8c0d6] font-semibold mb-1 ml-1 text-[1.05rem]">
-                Email
-              </label>
+            <div className="flex flex-row items-center border-b border-white/30 focus-within:border-white/70 mb-2">
+              <Mail className="text-white/60 mr-3" size={22} />
               <input
-  type="email"
-  id="email"
-  ref={emailRef}
-  className="
-    w-full bg-[#181b25] text-slate-100 rounded-xl px-4 py-2.5
-    focus:outline-none focus:ring-2 focus:ring-[#16d79c] focus:bg-[#181b25cc]
-    border border-[#232836] hover:border-[#16d79c66]
-    text-base font-semibold shadow-inner transition
-  "
-  placeholder="admin@example.com"
-  value={email}
-  onChange={e => setEmail(e.target.value)}
-  disabled={loading}
-  autoComplete="username"
-  spellCheck="false"
-/>
-
+                type="email"
+                id="email"
+                ref={emailRef}
+                className="w-full bg-transparent text-white/90 placeholder-white/40 py-2.5 focus:outline-none font-medium"
+                placeholder="Email ID"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                disabled={loading}
+                autoComplete="username"
+                spellCheck="false"
+              />
             </div>
-
             {/* Password */}
-            <div className="w-full">
-              <label htmlFor="password" className="block text-[#b8c0d6] font-semibold mb-1 ml-1 text-[1.05rem]">
-                Password
-              </label>
+            <div className="flex flex-row items-center border-b border-white/30 focus-within:border-white/70 mb-2">
+              <Lock className="text-white/60 mr-3" size={22} />
               <input
-  type="password"
-  id="password"
-  className="
-    w-full bg-[#181b25] text-slate-100 rounded-xl px-4 py-2.5
-    focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:bg-[#181b25cc]
-    border border-[#232836] hover:border-[#ffd70066]
-    text-base font-semibold shadow-inner transition
-  "
-  placeholder="••••••••"
-  value={password}
-  onChange={e => setPassword(e.target.value)}
-  disabled={loading}
-  autoComplete="current-password"
-  spellCheck="false"
-/>
-
+                type="password"
+                id="password"
+                className="w-full bg-transparent text-white/90 placeholder-white/40 py-2.5 focus:outline-none font-medium"
+                placeholder="Password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                disabled={loading}
+                autoComplete="current-password"
+                spellCheck="false"
+              />
             </div>
-
-            {/* Submit Button */}
+            {/* Remember Me & Forgot Password */}
+            <div className="flex flex-row items-center justify-between mt-1">
+              <label className="flex items-center text-white/60 text-xs font-medium select-none">
+                <input type="checkbox" className="mr-2 accent-[#6cf2ea]" disabled />
+                Remember me
+              </label>
+              <span className="text-white/40 text-xs font-medium italic cursor-pointer hover:text-white/70 transition">
+                Forgot Password?
+              </span>
+            </div>
+            {/* Login Button */}
             <button
               type="submit"
               disabled={loading}
-              className="
-                w-full mt-1 py-2.5 rounded-xl font-bold
-                bg-gradient-to-r from-[#FFD700] to-[#16d79c] text-[#181b25] shadow-lg text-lg
-                transition-all flex items-center justify-center
-                border border-[#ffd70040] hover:opacity-90 hover:scale-[1.025] active:scale-95
-                focus:outline-none focus:ring-2 focus:ring-[#ffd700]
-              "
+              className="w-full mt-2 py-2.5 rounded-xl font-bold bg-gradient-to-r from-[#FFD700] to-[#16d79c] text-[#181b25] shadow-lg text-lg transition-all flex items-center justify-center hover:opacity-90 active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#ffd700]"
               style={{
                 letterSpacing: ".03em",
                 boxShadow: "0 4px 24px #ffd70033",
@@ -144,24 +121,12 @@ export default function AdminLogin() {
               }}
             >
               {loading ? (
-                <svg
-                  className="animate-spin h-7 w-7 text-[#181b25]"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-40"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="#181b25"
-                    strokeWidth="4"
-                  />
+                <svg className="animate-spin h-7 w-7 text-[#181b25]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-30" cx="12" cy="12" r="10" stroke="#181b25" strokeWidth="4" />
                   <path className="opacity-75" fill="#FFD700" d="M4 12a8 8 0 018-8v8z" />
                 </svg>
               ) : (
-                "Login"
+                "LOGIN"
               )}
             </button>
           </form>
