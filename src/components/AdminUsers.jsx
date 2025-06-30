@@ -175,7 +175,7 @@ export default function AdminUsers() {
                       <img
   src={resolveKYCUrl(user.kyc_selfie)}
   alt="Selfie"
-  className="w-8 h-10 rounded-xl border-2 border-[#14B8A6] shadow object-cover"
+  className="w-5 h-7 rounded-lg border-2 border-[#14B8A6] shadow object-cover"
   style={{ objectFit: "cover" }}
 />
 
@@ -189,9 +189,10 @@ export default function AdminUsers() {
                       <img
   src={resolveKYCUrl(user.kyc_id_card)}
   alt="ID Card"
-  className="w-8 h-10 rounded-xl border-2 border-[#FFD700] shadow object-cover"
+  className="w-5 h-7 rounded-lg border-2 border-[#FFD700] shadow object-cover"
   style={{ objectFit: "cover" }}
 />
+
 
                     ) : (
                       <span className="text-gray-400 text-xs">N/A</span>
