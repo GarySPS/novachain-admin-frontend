@@ -10,7 +10,7 @@ import AdminUsers from "./components/AdminUsers";
 import NavBar from "./components/NavBar";
 import AdminTabsBar from "./components/AdminTabsBar";
 import AdminDeposits from "./components/AdminDeposits";
-import DepositWalletSettings from "./components/DepositWalletSettings";
+
 
 // Premium dark glass background
 const BgGradient = () => (
