@@ -83,7 +83,7 @@ function App() {
           <Route path="/users" element={<Protected><AnimatedPage><AdminUsers /></AnimatedPage></Protected>} />
           <Route path="/kyc" element={<Protected><AnimatedPage><AdminKYC /></AnimatedPage></Protected>} />
           <Route path="/deposits" element={<Protected><AnimatedPage><AdminDeposits /></AnimatedPage></Protected>} />
-          <Route path="/wallet-settings" element={<Protected><AnimatedPage><DepositWalletSettings /></AnimatedPage></Protected>} />
+          
         </Routes>
       </AnimatePresence>
     </>

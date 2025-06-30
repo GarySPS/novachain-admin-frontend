@@ -95,15 +95,16 @@ body {
 
 /* Always show admin KYC images at a fixed size */
 .admin-table img {
-  width: 48px !important;
-  height: 48px !important;
-  max-width: 48px !important;
-  max-height: 48px !important;
+  width: 144px !important;
+  height: 144px !important;
+  max-width: 144px !important;
+  max-height: 144px !important;
   object-fit: cover !important;
   border-radius: 8px !important;
   display: block;
   background: #23243a;
 }
+
 
 /* Gold accent for NovaChain branding */
 .gold, .text-gold {
