@@ -173,11 +173,12 @@ export default function AdminUsers() {
                   <td>
                     {user.kyc_selfie ? (
                       <img
-                        src={resolveKYCUrl(user.kyc_selfie)}
-                        alt="Selfie"
-                        className="w-16 h-20 rounded-xl border-2 border-[#14B8A6] shadow object-cover"
-                        style={{ objectFit: "cover" }}
-                      />
+  src={resolveKYCUrl(user.kyc_selfie)}
+  alt="Selfie"
+  className="w-8 h-10 rounded-xl border-2 border-[#14B8A6] shadow object-cover"
+  style={{ objectFit: "cover" }}
+/>
+
                     ) : (
                       <span className="text-gray-400 text-xs">N/A</span>
                     )}
@@ -186,11 +187,12 @@ export default function AdminUsers() {
                   <td>
                     {user.kyc_id_card ? (
                       <img
-                        src={resolveKYCUrl(user.kyc_id_card)}
-                        alt="ID Card"
-                        className="w-16 h-20 rounded-xl border-2 border-[#FFD700] shadow object-cover"
-                        style={{ objectFit: "cover" }}
-                      />
+  src={resolveKYCUrl(user.kyc_id_card)}
+  alt="ID Card"
+  className="w-8 h-10 rounded-xl border-2 border-[#FFD700] shadow object-cover"
+  style={{ objectFit: "cover" }}
+/>
+
                     ) : (
                       <span className="text-gray-400 text-xs">N/A</span>
                     )}
