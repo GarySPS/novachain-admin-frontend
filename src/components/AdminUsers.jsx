@@ -173,30 +173,21 @@ export default function AdminUsers() {
 {/* Selfie */}
 <td>
   {user.kyc_selfie ? (
-    <a
-      href={resolveKYCUrl(user.kyc_selfie)}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="inline-flex flex-col items-center gap-1 group"
-    >
-      <img
-        src={resolveKYCUrl(user.kyc_selfie)}
-        alt="Selfie"
-        style={{
-          width: '48px',
-          height: '48px',
-          maxWidth: '48px',
-          maxHeight: '48px',
-          objectFit: 'cover',
-          borderRadius: '8px',
-          border: '2px solid #14B8A6',
-          boxShadow: '0 2px 8px #0002',
-          display: 'block'
-        }}
-        onError={(e) => { e.target.style.display = 'none'; }}
-      />
-      <span className="text-[#16d79c] text-xs font-bold opacity-90 group-hover:underline">View</span>
-    </a>
+    <img
+      src={resolveKYCUrl(user.kyc_selfie)}
+      alt="Selfie"
+      style={{
+        width: '72px',
+        height: '72px',
+        objectFit: 'cover',
+        borderRadius: '10px',
+        border: '2px solid #16d79c',
+        boxShadow: '0 2px 8px #0002',
+        display: 'block',
+        margin: 'auto'
+      }}
+      onError={e => { e.target.src = "/broken-image.png"; }}
+    />
   ) : (
     <span className="text-gray-400 text-xs">N/A</span>
   )}
@@ -204,30 +195,21 @@ export default function AdminUsers() {
 {/* ID Card */}
 <td>
   {user.kyc_id_card ? (
-    <a
-      href={resolveKYCUrl(user.kyc_id_card)}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="inline-flex flex-col items-center gap-1 group"
-    >
-      <img
-        src={resolveKYCUrl(user.kyc_id_card)}
-        alt="ID Card"
-        style={{
-          width: '48px',
-          height: '48px',
-          maxWidth: '48px',
-          maxHeight: '48px',
-          objectFit: 'cover',
-          borderRadius: '8px',
-          border: '2px solid #FFD700',
-          boxShadow: '0 2px 8px #0002',
-          display: 'block'
-        }}
-        onError={(e) => { e.target.style.display = 'none'; }}
-      />
-      <span className="text-[#ffd700] text-xs font-bold opacity-90 group-hover:underline">View</span>
-    </a>
+    <img
+      src={resolveKYCUrl(user.kyc_id_card)}
+      alt="ID Card"
+      style={{
+        width: '72px',
+        height: '72px',
+        objectFit: 'cover',
+        borderRadius: '10px',
+        border: '2px solid #ffd700',
+        boxShadow: '0 2px 8px #0002',
+        display: 'block',
+        margin: 'auto'
+      }}
+      onError={e => { e.target.src = "/broken-image.png"; }}
+    />
   ) : (
     <span className="text-gray-400 text-xs">N/A</span>
   )}
