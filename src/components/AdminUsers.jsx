@@ -170,7 +170,7 @@ export default function AdminUsers() {
                   <td>{user.id}</td>
                   <td>{user.email}</td>
                   
-                  {/* Selfie */}
+{/* Selfie */}
 <td>
   {user.kyc_selfie ? (
     <a
@@ -233,29 +233,38 @@ export default function AdminUsers() {
   )}
 </td>
 
-                  {/* ID Card */}
-                  <td>
-                    {user.kyc_id_card ? (
-                  <img
-  src={resolveKYCUrl(user.kyc_id_card)}
-  alt="ID Card"
-  style={{
-    width: '48px',
-    height: '48px',
-    maxWidth: '48px',
-    maxHeight: '48px',
-    objectFit: 'cover',
-    borderRadius: '8px',
-    border: '2px solid #FFD700',
-    boxShadow: '0 2px 8px #0002',
-    display: 'block'
-  }}
-/>
+{/* ID Card */}
+<td>
+  {user.kyc_id_card ? (
+    <a
+      href={resolveKYCUrl(user.kyc_id_card)}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex flex-col items-center gap-1 group"
+    >
+      <img
+        src={resolveKYCUrl(user.kyc_id_card)}
+        alt="ID Card"
+        style={{
+          width: '48px',
+          height: '48px',
+          maxWidth: '48px',
+          maxHeight: '48px',
+          objectFit: 'cover',
+          borderRadius: '8px',
+          border: '2px solid #FFD700',
+          boxShadow: '0 2px 8px #0002',
+          display: 'block'
+        }}
+        onError={(e) => { e.target.style.display = 'none'; }}
+      />
+      <span className="text-[#ffd700] text-xs font-bold opacity-90 group-hover:underline">View</span>
+    </a>
+  ) : (
+    <span className="text-gray-400 text-xs">N/A</span>
+  )}
+</td>
 
-                    ) : (
-                      <span className="text-gray-400 text-xs">N/A</span>
-                    )}
-                  </td>
                   {/* KYC Status and Approve/Reject */}
                   <td>
                     {user.kyc_status === "approved" && (
