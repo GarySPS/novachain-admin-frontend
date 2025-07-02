@@ -252,18 +252,50 @@ export default function AdminUsers() {
               </>
             )}
           </td>
+          
           {/* Current Mode */}
-          <td>
-            {userWinModes[user.id] === "WIN" && (
-              <span className="px-2 py-1 rounded-lg bg-green-800 text-green-300 font-bold text-xs shadow">WIN</span>
-            )}
-            {userWinModes[user.id] === "LOSE" && (
-              <span className="px-2 py-1 rounded-lg bg-red-900 text-red-300 font-bold text-xs shadow">LOSE</span>
-            )}
-            {!userWinModes[user.id] && (
-              <span className="px-2 py-1 rounded-lg bg-gray-800 text-gray-400 font-semibold text-xs shadow">DEFAULT</span>
-            )}
-          </td>
+<td>
+  <div className="flex flex-col gap-1">
+    {/* Current Mode Badge */}
+    {userWinModes[user.id] === "WIN" && (
+      <span className="px-2 py-1 rounded-lg bg-green-800 text-green-300 font-bold text-xs shadow mb-1">WIN</span>
+    )}
+    {userWinModes[user.id] === "LOSE" && (
+      <span className="px-2 py-1 rounded-lg bg-red-900 text-red-300 font-bold text-xs shadow mb-1">LOSE</span>
+    )}
+    {!userWinModes[user.id] && (
+      <span className="px-2 py-1 rounded-lg bg-gray-800 text-gray-400 font-semibold text-xs shadow mb-1">DEFAULT</span>
+    )}
+    {/* Win/Lose Toggle Buttons */}
+    <div className="flex gap-1 mt-1">
+      <button
+        onClick={() => setUserWinMode(user.id, userWinModes[user.id] === "WIN" ? null : "WIN")}
+        className={`px-2 py-1 rounded-lg text-xs font-bold shadow transition flex items-center gap-1 ${
+          userWinModes[user.id] === "WIN"
+            ? "bg-gradient-to-r from-[#16d79c] to-[#ffd700] text-[#232836] ring-2 ring-[#16d79c66]"
+            : "bg-[#18241a] text-green-300"
+        }`}
+        disabled={actionLoading === user.id + "-winmode"}
+      >
+        {userWinModes[user.id] === "WIN" ? <BadgeCheck size={14} /> : null}
+        {userWinModes[user.id] === "WIN" ? "Auto Win" : "Set Win"}
+      </button>
+      <button
+        onClick={() => setUserWinMode(user.id, userWinModes[user.id] === "LOSE" ? null : "LOSE")}
+        className={`px-2 py-1 rounded-lg text-xs font-bold shadow transition flex items-center gap-1 ${
+          userWinModes[user.id] === "LOSE"
+            ? "bg-gradient-to-r from-[#f34e6d] to-[#ffd700] text-[#232836] ring-2 ring-[#ffd70066]"
+            : "bg-[#24181a] text-red-300"
+        }`}
+        disabled={actionLoading === user.id + "-winmode"}
+      >
+        {userWinModes[user.id] === "LOSE" ? <XCircle size={14} /> : null}
+        {userWinModes[user.id] === "LOSE" ? "Auto Lose" : "Set Lose"}
+      </button>
+    </div>
+  </div>
+</td>
+
           {/* Actions */}
           <td>
             <button
