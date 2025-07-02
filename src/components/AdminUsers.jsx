@@ -169,30 +169,70 @@ export default function AdminUsers() {
                 <tr key={user.id} className="border-b border-[#23283644] hover:bg-[#232836cc] transition font-semibold">
                   <td>{user.id}</td>
                   <td>{user.email}</td>
+                  
                   {/* Selfie */}
-                  <td>
-                    {user.kyc_selfie ? (
-                  <img
-  src={resolveKYCUrl(user.kyc_selfie)}
-  alt="Selfie"
-  style={{
-    width: '48px',
-    height: '48px',
-    maxWidth: '48px',
-    maxHeight: '48px',
-    objectFit: 'cover',
-    borderRadius: '8px',
-    border: '2px solid #14B8A6',
-    boxShadow: '0 2px 8px #0002',
-    display: 'block'
-  }}
-/>
+<td>
+  {user.kyc_selfie ? (
+    <a
+      href={resolveKYCUrl(user.kyc_selfie)}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex flex-col items-center gap-1 group"
+    >
+      <img
+        src={resolveKYCUrl(user.kyc_selfie)}
+        alt="Selfie"
+        style={{
+          width: '48px',
+          height: '48px',
+          maxWidth: '48px',
+          maxHeight: '48px',
+          objectFit: 'cover',
+          borderRadius: '8px',
+          border: '2px solid #14B8A6',
+          boxShadow: '0 2px 8px #0002',
+          display: 'block'
+        }}
+        onError={(e) => { e.target.style.display = 'none'; }}
+      />
+      <span className="text-[#16d79c] text-xs font-bold opacity-90 group-hover:underline">View</span>
+    </a>
+  ) : (
+    <span className="text-gray-400 text-xs">N/A</span>
+  )}
+</td>
+{/* ID Card */}
+<td>
+  {user.kyc_id_card ? (
+    <a
+      href={resolveKYCUrl(user.kyc_id_card)}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex flex-col items-center gap-1 group"
+    >
+      <img
+        src={resolveKYCUrl(user.kyc_id_card)}
+        alt="ID Card"
+        style={{
+          width: '48px',
+          height: '48px',
+          maxWidth: '48px',
+          maxHeight: '48px',
+          objectFit: 'cover',
+          borderRadius: '8px',
+          border: '2px solid #FFD700',
+          boxShadow: '0 2px 8px #0002',
+          display: 'block'
+        }}
+        onError={(e) => { e.target.style.display = 'none'; }}
+      />
+      <span className="text-[#ffd700] text-xs font-bold opacity-90 group-hover:underline">View</span>
+    </a>
+  ) : (
+    <span className="text-gray-400 text-xs">N/A</span>
+  )}
+</td>
 
-
-                    ) : (
-                      <span className="text-gray-400 text-xs">N/A</span>
-                    )}
-                  </td>
                   {/* ID Card */}
                   <td>
                     {user.kyc_id_card ? (
