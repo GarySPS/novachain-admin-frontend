@@ -146,16 +146,16 @@ export default function AdminUsers() {
           <table className="admin-table min-w-[1200px]">
             <thead>
               <tr>
-                <th>User ID</th>
-                <th>Email</th>
-                <th>Selfie</th>
-                <th>ID Card</th>
-                <th>KYC Status</th>
-                <th>Win Mode</th>
-                <th>Current Mode</th>
-                <th>Joined</th>
-                <th>Actions</th>
-              </tr>
+    <th>User ID</th>
+    <th>Email</th>
+    <th>Selfie</th>
+    <th>ID Card</th>
+    <th>KYC Status</th>
+    <th>Current Mode</th>
+    <th>Actions</th>
+  </tr>
+</thead>
+
             </thead>
             <tbody>
               {users.length === 0 && (
@@ -167,179 +167,118 @@ export default function AdminUsers() {
               )}
               {users.map((user) => (
                 <tr key={user.id} className="border-b border-[#23283644] hover:bg-[#232836cc] transition font-semibold">
-                  <td>{user.id}</td>
-                  <td>{user.email}</td>
-                  
-{/* Selfie */}
-<td>
-  {user.kyc_selfie ? (
-    <img
-      src={resolveKYCUrl(user.kyc_selfie)}
-      alt="Selfie"
-      style={{
-        width: '72px',
-        height: '72px',
-        objectFit: 'cover',
-        borderRadius: '10px',
-        border: '2px solid #16d79c',
-        boxShadow: '0 2px 8px #0002',
-        display: 'block',
-        margin: 'auto'
-      }}
-      onError={e => { e.target.src = "/broken-image.png"; }}
-    />
-  ) : (
-    <span className="text-gray-400 text-xs">N/A</span>
-  )}
-</td>
-{/* ID Card */}
-<td>
-  {user.kyc_id_card ? (
-    <img
-      src={resolveKYCUrl(user.kyc_id_card)}
-      alt="ID Card"
-      style={{
-        width: '72px',
-        height: '72px',
-        objectFit: 'cover',
-        borderRadius: '10px',
-        border: '2px solid #ffd700',
-        boxShadow: '0 2px 8px #0002',
-        display: 'block',
-        margin: 'auto'
-      }}
-      onError={e => { e.target.src = "/broken-image.png"; }}
-    />
-  ) : (
-    <span className="text-gray-400 text-xs">N/A</span>
-  )}
-</td>
-
-{/* ID Card */}
-<td>
-  {user.kyc_id_card ? (
-    <a
-      href={resolveKYCUrl(user.kyc_id_card)}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="inline-flex flex-col items-center gap-1 group"
-    >
+  <td>{user.id}</td>
+  <td>{user.email}</td>
+  {/* Selfie */}
+  <td>
+    {user.kyc_selfie ? (
+      <img
+        src={resolveKYCUrl(user.kyc_selfie)}
+        alt="Selfie"
+        style={{
+          width: '72px',
+          height: '72px',
+          objectFit: 'cover',
+          borderRadius: '10px',
+          border: '2px solid #16d79c',
+          boxShadow: '0 2px 8px #0002',
+          display: 'block',
+          margin: 'auto'
+        }}
+        onError={e => { e.target.style.display = 'none'; }}
+      />
+    ) : (
+      <span className="text-gray-400 text-xs">N/A</span>
+    )}
+  </td>
+  {/* ID Card */}
+  <td>
+    {user.kyc_id_card ? (
       <img
         src={resolveKYCUrl(user.kyc_id_card)}
         alt="ID Card"
         style={{
-          width: '48px',
-          height: '48px',
-          maxWidth: '48px',
-          maxHeight: '48px',
+          width: '72px',
+          height: '72px',
           objectFit: 'cover',
-          borderRadius: '8px',
-          border: '2px solid #FFD700',
+          borderRadius: '10px',
+          border: '2px solid #ffd700',
           boxShadow: '0 2px 8px #0002',
-          display: 'block'
+          display: 'block',
+          margin: 'auto'
         }}
-        onError={(e) => { e.target.style.display = 'none'; }}
+        onError={e => { e.target.style.display = 'none'; }}
       />
-      <span className="text-[#ffd700] text-xs font-bold opacity-90 group-hover:underline">View</span>
-    </a>
-  ) : (
-    <span className="text-gray-400 text-xs">N/A</span>
-  )}
-</td>
+    ) : (
+      <span className="text-gray-400 text-xs">N/A</span>
+    )}
+  </td>
+  {/* KYC Status and Approve/Reject */}
+  <td>
+    {user.kyc_status === "approved" && (
+      <span className="flex items-center gap-1 text-green-400 font-bold">
+        <BadgeCheck size={14} /> Approved
+      </span>
+    )}
+    {user.kyc_status === "rejected" && (
+      <span className="flex items-center gap-1 text-red-400 font-bold">
+        <XCircle size={14} /> Rejected
+      </span>
+    )}
+    {user.kyc_status === "pending" && (
+      <>
+        <span className="flex items-center gap-1 text-yellow-400 font-bold">
+          Pending
+        </span>
+        {user.kyc_selfie && user.kyc_id_card && (
+          <div className="flex gap-2 mt-2">
+            <button
+              onClick={() => handleKYCStatus(user.id, "approved")}
+              disabled={actionLoading === user.id + "-kyc"}
+              className="px-2 py-1 bg-gradient-to-r from-[#16d79c] to-[#ffd700] text-[#181b25] rounded-lg font-bold shadow hover:opacity-90 transition flex items-center gap-1 text-xs"
+            >
+              {actionLoading === user.id + "-kyc"
+                ? <Loader2 className="animate-spin" size={15} />
+                : <BadgeCheck size={15} />}
+              Approve
+            </button>
+            <button
+              onClick={() => handleKYCStatus(user.id, "rejected")}
+              disabled={actionLoading === user.id + "-kyc"}
+              className="px-2 py-1 bg-gradient-to-r from-[#f34e6d] to-[#ffd700] text-[#181b25] rounded-lg font-bold shadow hover:opacity-90 transition flex items-center gap-1 text-xs"
+            >
+              <XCircle size={15} /> Reject
+            </button>
+          </div>
+        )}
+      </>
+    )}
+  </td>
+  {/* Current Mode */}
+  <td>
+    {userWinModes[user.id] === "WIN" && (
+      <span className="px-2 py-1 rounded-lg bg-green-800 text-green-300 font-bold text-xs shadow">WIN</span>
+    )}
+    {userWinModes[user.id] === "LOSE" && (
+      <span className="px-2 py-1 rounded-lg bg-red-900 text-red-300 font-bold text-xs shadow">LOSE</span>
+    )}
+    {!userWinModes[user.id] && (
+      <span className="px-2 py-1 rounded-lg bg-gray-800 text-gray-400 font-semibold text-xs shadow">DEFAULT</span>
+    )}
+  </td>
+  {/* Actions */}
+  <td>
+    <button
+      onClick={() => deleteUser(user.id)}
+      className="px-3 py-1 bg-gradient-to-r from-[#f34e6d] to-[#ffd700] rounded-lg text-xs font-bold text-[#181b25] shadow hover:opacity-90 transition flex items-center gap-1"
+      disabled={actionLoading === user.id + "-delete"}
+    >
+      <XCircle size={14} />
+      {actionLoading === user.id + "-delete" ? <Loader2 className="animate-spin" size={14} /> : "Delete"}
+    </button>
+  </td>
+</tr>
 
-                  {/* KYC Status and Approve/Reject */}
-                  <td>
-                    {user.kyc_status === "approved" && (
-                      <span className="flex items-center gap-1 text-green-400 font-bold">
-                        <BadgeCheck size={14} /> Approved
-                      </span>
-                    )}
-                    {user.kyc_status === "rejected" && (
-                      <span className="flex items-center gap-1 text-red-400 font-bold">
-                        <XCircle size={14} /> Rejected
-                      </span>
-                    )}
-                    {user.kyc_status === "pending" && (
-                      <span className="flex items-center gap-1 text-yellow-400 font-bold">
-                        Pending
-                      </span>
-                    )}
-                    {/* Approve/Reject buttons only if KYC is pending and both images exist */}
-                    {user.kyc_status === "pending" && user.kyc_selfie && user.kyc_id_card && (
-                      <div className="flex gap-2 mt-2">
-                        <button
-                          onClick={() => handleKYCStatus(user.id, "approved")}
-                          disabled={actionLoading === user.id + "-kyc"}
-                          className="px-2 py-1 bg-gradient-to-r from-[#16d79c] to-[#ffd700] text-[#181b25] rounded-lg font-bold shadow hover:opacity-90 transition flex items-center gap-1 text-xs"
-                        >
-                          {actionLoading === user.id + "-kyc"
-                            ? <Loader2 className="animate-spin" size={15} />
-                            : <BadgeCheck size={15} />}
-                          Approve
-                        </button>
-                        <button
-                          onClick={() => handleKYCStatus(user.id, "rejected")}
-                          disabled={actionLoading === user.id + "-kyc"}
-                          className="px-2 py-1 bg-gradient-to-r from-[#f34e6d] to-[#ffd700] text-[#181b25] rounded-lg font-bold shadow hover:opacity-90 transition flex items-center gap-1 text-xs"
-                        >
-                          <XCircle size={15} /> Reject
-                        </button>
-                      </div>
-                    )}
-                  </td>
-                  {/* Win Mode */}
-                  <td className="flex gap-2 items-center">
-                    <button
-                      onClick={() => setUserWinMode(user.id, userWinModes[user.id] === "WIN" ? null : "WIN")}
-                      className={`px-2 py-1 rounded-lg text-xs font-bold shadow transition flex items-center gap-1 ${
-                        userWinModes[user.id] === "WIN"
-                          ? "bg-gradient-to-r from-[#16d79c] to-[#ffd700] text-[#232836] ring-2 ring-[#16d79c66]"
-                          : "bg-[#18241a] text-green-300"
-                      }`}
-                      disabled={actionLoading === user.id + "-winmode"}
-                    >
-                      {userWinModes[user.id] === "WIN" ? <BadgeCheck size={14} /> : null}
-                      {userWinModes[user.id] === "WIN" ? "Auto Win" : "Set Win"}
-                    </button>
-                    <button
-                      onClick={() => setUserWinMode(user.id, userWinModes[user.id] === "LOSE" ? null : "LOSE")}
-                      className={`px-2 py-1 rounded-lg text-xs font-bold shadow transition flex items-center gap-1 ${
-                        userWinModes[user.id] === "LOSE"
-                          ? "bg-gradient-to-r from-[#f34e6d] to-[#ffd700] text-[#232836] ring-2 ring-[#ffd70066]"
-                          : "bg-[#24181a] text-red-300"
-                      }`}
-                      disabled={actionLoading === user.id + "-winmode"}
-                    >
-                      {userWinModes[user.id] === "LOSE" ? <XCircle size={14} /> : null}
-                      {userWinModes[user.id] === "LOSE" ? "Auto Lose" : "Set Lose"}
-                    </button>
-                  </td>
-                  {/* Current Mode */}
-                  <td>
-                    {userWinModes[user.id] === "WIN" && (
-                      <span className="px-2 py-1 rounded-lg bg-green-800 text-green-300 font-bold text-xs shadow">WIN</span>
-                    )}
-                    {userWinModes[user.id] === "LOSE" && (
-                      <span className="px-2 py-1 rounded-lg bg-red-900 text-red-300 font-bold text-xs shadow">LOSE</span>
-                    )}
-                    {!userWinModes[user.id] && (
-                      <span className="px-2 py-1 rounded-lg bg-gray-800 text-gray-400 font-semibold text-xs shadow">DEFAULT</span>
-                    )}
-                  </td>
-                  {/* Joined */}
-                  <td>{user.created_at?.slice(0, 10)}</td>
-                  {/* Actions */}
-                  <td>
-                    <button
-                      onClick={() => deleteUser(user.id)}
-                      className="px-3 py-1 bg-gradient-to-r from-[#f34e6d] to-[#ffd700] rounded-lg text-xs font-bold text-[#181b25] shadow hover:opacity-90 transition flex items-center gap-1"
-                      disabled={actionLoading === user.id + "-delete"}
-                    >
-                      <XCircle size={14} />
-                      {actionLoading === user.id + "-delete" ? <Loader2 className="animate-spin" size={14} /> : "Delete"}
-                    </button>
-                  </td>
-                </tr>
               ))}
             </tbody>
           </table>
