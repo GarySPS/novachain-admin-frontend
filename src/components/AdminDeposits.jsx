@@ -3,7 +3,8 @@ import { CheckCircle2, XCircle, Loader2, Image } from "lucide-react";
 
 // Config for API
 const API_BASE = process.env.REACT_APP_ADMIN_API_BASE || "https://novachain-admin-backend.onrender.com";
-const IMAGE_BASE = "https://novachain-backend.onrender.com";
+// Supabase Storage config
+const SUPABASE_PUBLIC_URL = "https://zgnefojwdijycgcqngke.supabase.co/storage/v1/object/public/deposit";
 
 export default function AdminDeposits() {
   const [deposits, setDeposits] = useState([]);
@@ -113,28 +114,32 @@ export default function AdminDeposits() {
                   <td>
                     <span className="text-xs">{d.created_at?.slice(0, 19).replace("T", " ")}</span>
                   </td>
+                  {/* THE SLIP COLUMN FIXED FOR SUPABASE */}
                   <td>
-  {d.screenshot ? (
-    <a
-      href={d.screenshot}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="inline-block"
-      title="View deposit slip"
-    >
-      <img
-        src={d.screenshot}
-        alt="Deposit Screenshot"
-        className="rounded-md shadow border border-[#ffd70044] object-cover w-[48px] h-[48px] hover:scale-105 transition"
-      />
-    </a>
-  ) : (
-    <span className="flex items-center gap-1 text-gray-400">
-      <Image size={18} /> —
-    </span>
-  )}
-</td>
-
+                    {d.screenshot ? (
+                      <a
+                        href={`${SUPABASE_PUBLIC_URL}/${d.screenshot}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block"
+                        title="View deposit slip"
+                      >
+                        <img
+                          src={`${SUPABASE_PUBLIC_URL}/${d.screenshot}`}
+                          alt="Deposit Screenshot"
+                          className="rounded-md shadow border border-[#ffd70044] object-cover w-[48px] h-[48px] hover:scale-105 transition"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = "https://via.placeholder.com/48?text=No+Image";
+                          }}
+                        />
+                      </a>
+                    ) : (
+                      <span className="flex items-center gap-1 text-gray-400">
+                        <Image size={18} /> —
+                      </span>
+                    )}
+                  </td>
                   {/* DEBUG COLUMN */}
                   <td style={{ color: "#FFD700", fontSize: 10, maxWidth: 200, overflow: "auto" }}>
                     {JSON.stringify(d)}
