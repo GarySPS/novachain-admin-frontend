@@ -4,7 +4,7 @@ import AdminUsers from "../components/AdminUsers";
 import AdminTrades from "../components/AdminTrades";
 import AdminDeposits from "../components/AdminDeposits";
 import AdminWithdrawals from "../components/AdminWithdrawals";
-// import DepositWalletSettings from "../components/DepositWalletSettings"; // <-- Commented for now
+import DepositWalletSettings from "../components/DepositWalletSettings"; 
 import { motion, AnimatePresence } from "framer-motion";
 import { Users, TrendingUp, DollarSign, Settings, Banknote } from "lucide-react";
 
@@ -13,7 +13,7 @@ const tabList = [
   { key: "users", label: "Users", icon: <Users size={18} className="mr-1 text-[#16d79c]" /> },
   { key: "trades", label: "Trades", icon: <TrendingUp size={18} className="mr-1 text-[#ffd700]" /> },
   { key: "deposits", label: "Deposits", icon: <DollarSign size={18} className="mr-1 text-[#2dd4bf]" /> },
-  // { key: "walletSettings", label: "Deposit Settings", icon: <Settings size={18} className="mr-1 text-[#3af0ff]" /> }, // <--- TEMPORARILY REMOVED
+  { key: "walletSettings", label: "Deposit Settings", icon: <Settings size={18} className="mr-1 text-[#3af0ff]" /> }, 
   { key: "withdrawals", label: "Withdrawals", icon: <Banknote size={18} className="mr-1 text-[#f34e6d]" /> },
 ];
 
@@ -118,7 +118,7 @@ export default function AdminDashboard() {
               <AdminDeposits />
             </motion.div>
           )}
-          {/* 
+          
           {activeTab === "walletSettings" && (
             <motion.div
               key="walletSettings"
@@ -131,7 +131,7 @@ export default function AdminDashboard() {
               <DepositWalletSettings />
             </motion.div>
           )}
-          */}
+   
           {activeTab === "withdrawals" && (
             <motion.div
               key="withdrawals"
