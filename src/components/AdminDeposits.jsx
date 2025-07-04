@@ -3,7 +3,6 @@ import { CheckCircle2, XCircle, Loader2, Image } from "lucide-react";
 
 // Config for API
 const API_BASE = process.env.REACT_APP_ADMIN_API_BASE || "https://novachain-admin-backend.onrender.com";
-// The deposit slip images are always from the **main user backend**
 const IMAGE_BASE = "https://novachain-backend.onrender.com";
 
 export default function AdminDeposits() {
@@ -28,6 +27,8 @@ export default function AdminDeposits() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to fetch deposits");
       setDeposits(data);
+      // DEBUG: Log deposit data to console
+      console.log("DEPOSIT DATA:", data);
     } catch (err) {
       setError(err.message || "Network error");
     }
@@ -77,6 +78,7 @@ export default function AdminDeposits() {
                 <th>Status</th>
                 <th>Time</th>
                 <th>Slip</th>
+                <th>DEBUG</th> {/* REMOVE THIS COLUMN LATER */}
                 <th>Action</th>
               </tr>
             </thead>
@@ -112,17 +114,62 @@ export default function AdminDeposits() {
                     <span className="text-xs">{d.created_at?.slice(0, 19).replace("T", " ")}</span>
                   </td>
                   <td>
+                    {/* Try the most common possible fields */}
                     {d.screenshot ? (
                       <a
-                        href={`${IMAGE_BASE}/uploads/${d.screenshot}`}
+                        href={
+                          d.screenshot.startsWith("http")
+                            ? d.screenshot
+                            : `${IMAGE_BASE}/uploads/${d.screenshot}`
+                        }
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-block"
                         title="View deposit slip"
                       >
                         <img
-                          src={`${IMAGE_BASE}/uploads/${d.screenshot}`}
+                          src={
+                            d.screenshot.startsWith("http")
+                              ? d.screenshot
+                              : `${IMAGE_BASE}/uploads/${d.screenshot}`
+                          }
                           alt="Deposit Screenshot"
+                          className="rounded-md shadow border border-[#ffd70044] object-cover w-[48px] h-[48px] hover:scale-105 transition"
+                        />
+                      </a>
+                    ) : d.slip ? (
+                      <a
+                        href={
+                          d.slip.startsWith("http")
+                            ? d.slip
+                            : `${IMAGE_BASE}/uploads/${d.slip}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block"
+                        title="View deposit slip"
+                      >
+                        <img
+                          src={
+                            d.slip.startsWith("http")
+                              ? d.slip
+                              : `${IMAGE_BASE}/uploads/${d.slip}`
+                          }
+                          alt="Deposit Slip"
+                          className="rounded-md shadow border border-[#ffd70044] object-cover w-[48px] h-[48px] hover:scale-105 transition"
+                        />
+                      </a>
+                    ) : d.deposit_slip_url ? (
+                      <a
+                        href={d.deposit_slip_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block"
+                        title="View deposit slip"
+                      >
+                        <img
+                          src={d.deposit_slip_url}
+                          alt="Deposit Slip"
                           className="rounded-md shadow border border-[#ffd70044] object-cover w-[48px] h-[48px] hover:scale-105 transition"
                         />
                       </a>
@@ -132,6 +179,11 @@ export default function AdminDeposits() {
                       </span>
                     )}
                   </td>
+                  {/* DEBUG COLUMN */}
+                  <td style={{ color: "#FFD700", fontSize: 10, maxWidth: 200, overflow: "auto" }}>
+                    {JSON.stringify(d)}
+                  </td>
+                  {/* END DEBUG */}
                   <td>
                     {d.status === "pending" ? (
                       <div className="flex gap-2 justify-center">
@@ -170,7 +222,7 @@ export default function AdminDeposits() {
               ))}
               {deposits.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="p-8 text-center text-gray-400 font-semibold">
+                  <td colSpan={9} className="p-8 text-center text-gray-400 font-semibold">
                     No deposits found.
                   </td>
                 </tr>
