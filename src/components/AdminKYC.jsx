@@ -112,7 +112,7 @@ export default function AdminKYC() {
                     <td>
                       {u.kyc_selfie ? (
                         <a
-                          href={`${MAIN_API_BASE}${u.kyc_selfie}`}
+                          href={u.kyc_selfie}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1 px-2 py-1 rounded bg-[#1a2334] text-[#16d79c] font-semibold hover:bg-[#1f2937] transition"
@@ -127,7 +127,7 @@ export default function AdminKYC() {
                     <td>
                       {u.kyc_id_card ? (
                         <a
-                          href={`${MAIN_API_BASE}${u.kyc_id_card}`}
+                          href={u.kyc_id_card}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1 px-2 py-1 rounded bg-[#1a2334] text-[#3af0ff] font-semibold hover:bg-[#1f2937] transition"

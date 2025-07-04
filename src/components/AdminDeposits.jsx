@@ -114,71 +114,27 @@ export default function AdminDeposits() {
                     <span className="text-xs">{d.created_at?.slice(0, 19).replace("T", " ")}</span>
                   </td>
                   <td>
-                    {/* Try the most common possible fields */}
-                    {d.screenshot ? (
-                      <a
-                        href={
-                          d.screenshot.startsWith("http")
-                            ? d.screenshot
-                            : `${IMAGE_BASE}/uploads/${d.screenshot}`
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-block"
-                        title="View deposit slip"
-                      >
-                        <img
-                          src={
-                            d.screenshot.startsWith("http")
-                              ? d.screenshot
-                              : `${IMAGE_BASE}/uploads/${d.screenshot}`
-                          }
-                          alt="Deposit Screenshot"
-                          className="rounded-md shadow border border-[#ffd70044] object-cover w-[48px] h-[48px] hover:scale-105 transition"
-                        />
-                      </a>
-                    ) : d.slip ? (
-                      <a
-                        href={
-                          d.slip.startsWith("http")
-                            ? d.slip
-                            : `${IMAGE_BASE}/uploads/${d.slip}`
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-block"
-                        title="View deposit slip"
-                      >
-                        <img
-                          src={
-                            d.slip.startsWith("http")
-                              ? d.slip
-                              : `${IMAGE_BASE}/uploads/${d.slip}`
-                          }
-                          alt="Deposit Slip"
-                          className="rounded-md shadow border border-[#ffd70044] object-cover w-[48px] h-[48px] hover:scale-105 transition"
-                        />
-                      </a>
-                    ) : d.deposit_slip_url ? (
-                      <a
-                        href={d.deposit_slip_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-block"
-                        title="View deposit slip"
-                      >
-                        <img
-                          src={d.deposit_slip_url}
-                          alt="Deposit Slip"
-                          className="rounded-md shadow border border-[#ffd70044] object-cover w-[48px] h-[48px] hover:scale-105 transition"
-                        />
-                      </a>
-                    ) : (
-                      <span className="flex items-center gap-1 text-gray-400">
-                        <Image size={18} /> —
-                      </span>
-                    )}
-                  </td>
+  {d.screenshot ? (
+    <a
+      href={d.screenshot}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-block"
+      title="View deposit slip"
+    >
+      <img
+        src={d.screenshot}
+        alt="Deposit Screenshot"
+        className="rounded-md shadow border border-[#ffd70044] object-cover w-[48px] h-[48px] hover:scale-105 transition"
+      />
+    </a>
+  ) : (
+    <span className="flex items-center gap-1 text-gray-400">
+      <Image size={18} /> —
+    </span>
+  )}
+</td>
+
                   {/* DEBUG COLUMN */}
                   <td style={{ color: "#FFD700", fontSize: 10, maxWidth: 200, overflow: "auto" }}>
                     {JSON.stringify(d)}
