@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CheckCircle2, XCircle, Loader2, Image } from "lucide-react";
 
 // Config for API
-const API_BASE = process.env.REACT_APP_ADMIN_API_BASE || "https://novachain-admin-backend.onrender.com";
+const API_BASE = import.meta.env.VITE_ADMIN_API_BASE || "https://novachain-admin-backend.onrender.com";
 // Supabase Storage config
 const SUPABASE_PUBLIC_URL = "https://zgnefojwdijycgcqngke.supabase.co/storage/v1/object/public/deposit";
 
@@ -71,18 +71,17 @@ export default function AdminDeposits() {
         <div className="overflow-x-auto rounded-xl">
           <table className="admin-table min-w-[700px]">
             <thead>
-              <tr>
-                <th>ID</th>
-                <th>User</th>
-                <th>Coin</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Time</th>
-                <th>Slip</th>
-                <th>DEBUG</th> {/* REMOVE THIS COLUMN LATER */}
-                <th>Action</th>
-              </tr>
-            </thead>
+  <tr>
+    <th>ID</th>
+    <th>User</th>
+    <th>Coin</th>
+    <th>Amount</th>
+    <th>Status</th>
+    <th>Time</th>
+    <th>Slip</th>
+    <th>Action</th>
+  </tr>
+</thead>
             <tbody>
               {deposits.map((d, idx) => (
                 <tr key={`deposit-${d.id || idx}-${d.user_id || "x"}`}>
@@ -114,37 +113,51 @@ export default function AdminDeposits() {
                   <td>
                     <span className="text-xs">{d.created_at?.slice(0, 19).replace("T", " ")}</span>
                   </td>
-                  {/* THE SLIP COLUMN FIXED FOR SUPABASE */}
+                  {/* SLIP (Deposit Screenshot) */}
                   <td>
                     {d.screenshot ? (
-                      <a
-                        href={`${SUPABASE_PUBLIC_URL}/${d.screenshot}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-block"
-                        title="View deposit slip"
-                      >
-                        <img
-                          src={`${SUPABASE_PUBLIC_URL}/${d.screenshot}`}
-                          alt="Deposit Screenshot"
-                          className="rounded-md shadow border border-[#ffd70044] object-cover w-[48px] h-[48px] hover:scale-105 transition"
-                          onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = "https://via.placeholder.com/48?text=No+Image";
-                          }}
-                        />
-                      </a>
+                      (() => {
+                        let encodedUrl;
+                        if (!d.screenshot.includes('/')) {
+                          // Flat style filename
+                          encodedUrl = `${SUPABASE_PUBLIC_URL}/${encodeURIComponent(d.screenshot)}`;
+                        } else if (d.screenshot.startsWith("/uploads/")) {
+                          encodedUrl = `${API_BASE}${d.screenshot}`;
+                        } else if (d.screenshot.startsWith("http")) {
+                          encodedUrl = d.screenshot;
+                        } else {
+                          // Legacy (should not happen, but safe)
+                          const pathParts = d.screenshot.split('/');
+                          const fileName = encodeURIComponent(pathParts.pop());
+                          encodedUrl = `${SUPABASE_PUBLIC_URL}/${pathParts.join('/')}/${fileName}`;
+                        }
+                        return (
+                          <a
+                            href={encodedUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-block"
+                            title="View deposit slip"
+                          >
+                            <img
+                              src={encodedUrl}
+                              alt="Deposit Screenshot"
+                              className="rounded-md shadow border border-[#ffd70044] object-cover w-[48px] h-[48px] hover:scale-105 transition"
+                              onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = "https://via.placeholder.com/48?text=No+Image";
+                              }}
+                            />
+                          </a>
+                        );
+                      })()
                     ) : (
                       <span className="flex items-center gap-1 text-gray-400">
                         <Image size={18} /> —
                       </span>
                     )}
                   </td>
-                  {/* DEBUG COLUMN */}
-                  <td style={{ color: "#FFD700", fontSize: 10, maxWidth: 200, overflow: "auto" }}>
-                    {JSON.stringify(d)}
-                  </td>
-                  {/* END DEBUG */}
+                  
                   <td>
                     {d.status === "pending" ? (
                       <div className="flex gap-2 justify-center">
@@ -183,9 +196,9 @@ export default function AdminDeposits() {
               ))}
               {deposits.length === 0 && (
                 <tr>
-                  <td colSpan={9} className="p-8 text-center text-gray-400 font-semibold">
-                    No deposits found.
-                  </td>
+                  <td colSpan={8} className="p-8 text-center text-gray-400 font-semibold">
+  No deposits found.
+</td>
                 </tr>
               )}
             </tbody>
