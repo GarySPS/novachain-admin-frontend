@@ -28,22 +28,6 @@ const generateFakeOHLCData = () => {
   return data;
 };
 
-const coins = [
-  'bitcoin', 'ethereum', 'binancecoin', 'solana', 'ripple',
-  'cardano', 'polkadot', 'dogecoin', 'litecoin', 'shiba-inu',
-  'tron', 'stellar', 'vechain', 'theta-token', 'filecoin',
-  'uniswap', 'chainlink', 'monero', 'eos', 'tezos'
-];
-
-const fakeNews = [
-  "NovaChain platform hits 10,000 active users!",
-  "BTC price surges amid market optimism!",
-  "New VIP features launching next week!",
-  "Join now to get exclusive bonuses!",
-  "Admin Dashboard Premium Update Live!",
-  "Instant KYC verifications rolling out this month.",
-];
-
 const PremiumNewsTicker = () => (
   <div className="mt-8 bg-gradient-to-br from-[#222947]/70 to-[#171d31]/80 rounded-2xl p-3 overflow-hidden shadow-xl border-t border-white/5 relative">
     <motion.div

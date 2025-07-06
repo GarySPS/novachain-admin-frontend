@@ -17,6 +17,17 @@ function resolveKYCUrl(raw) {
   return `${MAIN_API_BASE}/uploads/${raw}`;
 }
 
+// Format date from ISO string to "YYYY-MM-DD HH:mm"
+function formatDate(dt) {
+  if (!dt) return "N/A";
+  try {
+    const d = new Date(dt);
+    return d.toLocaleDateString() + " " + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  } catch {
+    return "N/A";
+  }
+}
+
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,39 +37,50 @@ export default function AdminUsers() {
 
   // Fetch users from admin API
   const fetchUsers = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const token = localStorage.getItem("adminToken");
-      const res = await fetch(`${API_BASE}/api/admin/users`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to fetch users");
-      setUsers(data);
-    } catch (err) {
-      setError(err.message || "Network error");
-    }
-    setLoading(false);
-  };
+  setLoading(true);
+  setError("");
+  try {
+    const token = localStorage.getItem("adminToken");
+    const adminToken = localStorage.getItem("xAdminToken"); // Add this
+    const res = await fetch(`${API_BASE}/api/admin/users`, {
+      headers: { 
+        Authorization: `Bearer ${token}`,
+        'x-admin-token': adminToken, // Add this
+      },
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to fetch users");
+    setUsers(data);
+    console.log("USERS DATA:", data);
+  } catch (err) {
+    setError(err.message || "Network error");
+  }
+  setLoading(false);
+};
+
 
   // Fetch user win/lose mode map
-  const fetchWinModes = async () => {
-    try {
-      const token = localStorage.getItem("adminToken");
-      const res = await fetch(`${API_BASE}/api/admin/users`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      let map = {};
-      (Array.isArray(data) ? data : []).forEach(u => {
-        if (u.trade_mode) map[u.id] = u.trade_mode.toUpperCase();
-      });
-      setUserWinModes(map);
-    } catch {
-      setUserWinModes({});
-    }
-  };
+ const fetchWinModes = async () => {
+  try {
+    const token = localStorage.getItem("adminToken");
+    const adminToken = localStorage.getItem("xAdminToken"); // Add this
+    const res = await fetch(`${API_BASE}/api/admin/users`, {
+      headers: { 
+        Authorization: `Bearer ${token}`,
+        'x-admin-token': adminToken, // Add this
+      },
+    });
+    const data = await res.json();
+    let map = {};
+    (Array.isArray(data) ? data : []).forEach(u => {
+      if (u.trade_mode) map[u.id] = u.trade_mode.toUpperCase();
+    });
+    setUserWinModes(map);
+  } catch {
+    setUserWinModes({});
+  }
+};
+
 
   // Set WIN/LOSE mode for user
   const setUserWinMode = async (user_id, mode) => {
@@ -143,175 +165,176 @@ export default function AdminUsers() {
         </div>
       ) : (
         <div className="overflow-x-auto rounded-xl max-w-full">
-          <table className="admin-table min-w-[1200px]">
-  <thead>
-    <tr>
-      <th>User ID</th>
-      <th>Email</th>
-      <th>Selfie</th>
-      <th>ID Card</th>
-      <th>KYC Status</th>
-      <th>Current Mode</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {users.length === 0 ? (
-      <tr>
-        <td colSpan={7} className="p-8 text-center text-gray-400 font-semibold">
-          No users found.
-        </td>
-      </tr>
-    ) : (
-      users.map((user) => (
-        <tr key={user.id} className="border-b border-[#23283644] hover:bg-[#232836cc] transition font-semibold">
-          <td>{user.id}</td>
-          <td>{user.email}</td>
-          {/* Selfie */}
-          <td>
-            {user.kyc_selfie ? (
-              <img
-                src={resolveKYCUrl(user.kyc_selfie)}
-                alt="Selfie"
-                style={{
-                  width: '72px',
-                  height: '72px',
-                  objectFit: 'cover',
-                  borderRadius: '10px',
-                  border: '2px solid #16d79c',
-                  boxShadow: '0 2px 8px #0002',
-                  display: 'block',
-                  margin: 'auto'
-                }}
-                onError={e => { e.target.style.display = 'none'; }}
-              />
-            ) : (
-              <span className="text-gray-400 text-xs">N/A</span>
-            )}
-          </td>
-          {/* ID Card */}
-          <td>
-            {user.kyc_id_card ? (
-              <img
-                src={resolveKYCUrl(user.kyc_id_card)}
-                alt="ID Card"
-                style={{
-                  width: '72px',
-                  height: '72px',
-                  objectFit: 'cover',
-                  borderRadius: '10px',
-                  border: '2px solid #ffd700',
-                  boxShadow: '0 2px 8px #0002',
-                  display: 'block',
-                  margin: 'auto'
-                }}
-                onError={e => { e.target.style.display = 'none'; }}
-              />
-            ) : (
-              <span className="text-gray-400 text-xs">N/A</span>
-            )}
-          </td>
-          {/* KYC Status and Approve/Reject */}
-          <td>
-            {user.kyc_status === "approved" && (
-              <span className="flex items-center gap-1 text-green-400 font-bold">
-                <BadgeCheck size={14} /> Approved
-              </span>
-            )}
-            {user.kyc_status === "rejected" && (
-              <span className="flex items-center gap-1 text-red-400 font-bold">
-                <XCircle size={14} /> Rejected
-              </span>
-            )}
-            {user.kyc_status === "pending" && (
-              <>
-                <span className="flex items-center gap-1 text-yellow-400 font-bold">
-                  Pending
-                </span>
-                {user.kyc_selfie && user.kyc_id_card && (
-                  <div className="flex gap-2 mt-2">
-                    <button
-                      onClick={() => handleKYCStatus(user.id, "approved")}
-                      disabled={actionLoading === user.id + "-kyc"}
-                      className="px-2 py-1 bg-gradient-to-r from-[#16d79c] to-[#ffd700] text-[#181b25] rounded-lg font-bold shadow hover:opacity-90 transition flex items-center gap-1 text-xs"
-                    >
-                      {actionLoading === user.id + "-kyc"
-                        ? <Loader2 className="animate-spin" size={15} />
-                        : <BadgeCheck size={15} />}
-                      Approve
-                    </button>
-                    <button
-                      onClick={() => handleKYCStatus(user.id, "rejected")}
-                      disabled={actionLoading === user.id + "-kyc"}
-                      className="px-2 py-1 bg-gradient-to-r from-[#f34e6d] to-[#ffd700] text-[#181b25] rounded-lg font-bold shadow hover:opacity-90 transition flex items-center gap-1 text-xs"
-                    >
-                      <XCircle size={15} /> Reject
-                    </button>
-                  </div>
-                )}
-              </>
-            )}
-          </td>
-          
-          {/* Current Mode */}
-<td>
-  <div className="flex flex-col gap-1">
-    {/* Current Mode Badge */}
-    {userWinModes[user.id] === "WIN" && (
-      <span className="px-2 py-1 rounded-lg bg-green-800 text-green-300 font-bold text-xs shadow mb-1">WIN</span>
-    )}
-    {userWinModes[user.id] === "LOSE" && (
-      <span className="px-2 py-1 rounded-lg bg-red-900 text-red-300 font-bold text-xs shadow mb-1">LOSE</span>
-    )}
-    {!userWinModes[user.id] && (
-      <span className="px-2 py-1 rounded-lg bg-gray-800 text-gray-400 font-semibold text-xs shadow mb-1">DEFAULT</span>
-    )}
-    {/* Win/Lose Toggle Buttons */}
-    <div className="flex gap-1 mt-1">
-      <button
-        onClick={() => setUserWinMode(user.id, userWinModes[user.id] === "WIN" ? null : "WIN")}
-        className={`px-2 py-1 rounded-lg text-xs font-bold shadow transition flex items-center gap-1 ${
-          userWinModes[user.id] === "WIN"
-            ? "bg-gradient-to-r from-[#16d79c] to-[#ffd700] text-[#232836] ring-2 ring-[#16d79c66]"
-            : "bg-[#18241a] text-green-300"
-        }`}
-        disabled={actionLoading === user.id + "-winmode"}
-      >
-        {userWinModes[user.id] === "WIN" ? <BadgeCheck size={14} /> : null}
-        {userWinModes[user.id] === "WIN" ? "Auto Win" : "Set Win"}
-      </button>
-      <button
-        onClick={() => setUserWinMode(user.id, userWinModes[user.id] === "LOSE" ? null : "LOSE")}
-        className={`px-2 py-1 rounded-lg text-xs font-bold shadow transition flex items-center gap-1 ${
-          userWinModes[user.id] === "LOSE"
-            ? "bg-gradient-to-r from-[#f34e6d] to-[#ffd700] text-[#232836] ring-2 ring-[#ffd70066]"
-            : "bg-[#24181a] text-red-300"
-        }`}
-        disabled={actionLoading === user.id + "-winmode"}
-      >
-        {userWinModes[user.id] === "LOSE" ? <XCircle size={14} /> : null}
-        {userWinModes[user.id] === "LOSE" ? "Auto Lose" : "Set Lose"}
-      </button>
-    </div>
-  </div>
-</td>
-
-          {/* Actions */}
-          <td>
-            <button
-              onClick={() => deleteUser(user.id)}
-              className="px-3 py-1 bg-gradient-to-r from-[#f34e6d] to-[#ffd700] rounded-lg text-xs font-bold text-[#181b25] shadow hover:opacity-90 transition flex items-center gap-1"
-              disabled={actionLoading === user.id + "-delete"}
-            >
-              <XCircle size={14} />
-              {actionLoading === user.id + "-delete" ? <Loader2 className="animate-spin" size={14} /> : "Delete"}
-            </button>
-          </td>
-        </tr>
-      ))
-    )}
-  </tbody>
-</table>
+          <table className="admin-table min-w-[1300px]">
+            <thead>
+              <tr>
+                <th>User ID</th>
+                <th>Email</th>
+                <th>Selfie</th>
+                <th>ID Card</th>
+                <th>KYC Status</th>
+                <th>Sign Up Date</th>
+                <th>Current Mode</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.length === 0 ? (
+                <tr>
+                  <td colSpan={8} className="p-8 text-center text-gray-400 font-semibold">
+                    No users found.
+                  </td>
+                </tr>
+              ) : (
+                users.map((user) => (
+                  <tr key={user.id} className="border-b border-[#23283644] hover:bg-[#232836cc] transition font-semibold">
+                    <td>{user.id}</td>
+                    <td>{user.email}</td>
+                    {/* Selfie */}
+                    <td>
+                      {user.kyc_selfie ? (
+                        <img
+                          src={resolveKYCUrl(user.kyc_selfie)}
+                          alt="Selfie"
+                          style={{
+                            width: '62px',
+                            height: '62px',
+                            objectFit: 'cover',
+                            borderRadius: '10px',
+                            border: '2px solid #16d79c',
+                            boxShadow: '0 2px 8px #0002',
+                            display: 'block',
+                            margin: 'auto'
+                          }}
+                          onError={e => { e.target.style.display = 'none'; }}
+                        />
+                      ) : (
+                        <span className="text-gray-400 text-xs">N/A</span>
+                      )}
+                    </td>
+                    {/* ID Card */}
+                    <td>
+                      {user.kyc_id_card ? (
+                        <img
+                          src={resolveKYCUrl(user.kyc_id_card)}
+                          alt="ID Card"
+                          style={{
+                            width: '62px',
+                            height: '62px',
+                            objectFit: 'cover',
+                            borderRadius: '10px',
+                            border: '2px solid #ffd700',
+                            boxShadow: '0 2px 8px #0002',
+                            display: 'block',
+                            margin: 'auto'
+                          }}
+                          onError={e => { e.target.style.display = 'none'; }}
+                        />
+                      ) : (
+                        <span className="text-gray-400 text-xs">N/A</span>
+                      )}
+                    </td>
+                    {/* KYC Status */}
+                    <td>
+                      {user.kyc_status === "approved" && (
+                        <span className="flex items-center gap-1 text-green-400 font-bold">
+                          <BadgeCheck size={14} /> Approved
+                        </span>
+                      )}
+                      {user.kyc_status === "rejected" && (
+                        <span className="flex items-center gap-1 text-red-400 font-bold">
+                          <XCircle size={14} /> Rejected
+                        </span>
+                      )}
+                      {user.kyc_status === "pending" && (
+                        <>
+                          <span className="flex items-center gap-1 text-yellow-400 font-bold">
+                            Pending
+                          </span>
+                          {user.kyc_selfie && user.kyc_id_card && (
+                            <div className="flex gap-2 mt-2">
+                              <button
+                                onClick={() => handleKYCStatus(user.id, "approved")}
+                                disabled={actionLoading === user.id + "-kyc"}
+                                className="px-2 py-1 bg-gradient-to-r from-[#16d79c] to-[#ffd700] text-[#181b25] rounded-lg font-bold shadow hover:opacity-90 transition flex items-center gap-1 text-xs"
+                              >
+                                {actionLoading === user.id + "-kyc"
+                                  ? <Loader2 className="animate-spin" size={15} />
+                                  : <BadgeCheck size={15} />}
+                                Approve
+                              </button>
+                              <button
+                                onClick={() => handleKYCStatus(user.id, "rejected")}
+                                disabled={actionLoading === user.id + "-kyc"}
+                                className="px-2 py-1 bg-gradient-to-r from-[#f34e6d] to-[#ffd700] text-[#181b25] rounded-lg font-bold shadow hover:opacity-90 transition flex items-center gap-1 text-xs"
+                              >
+                                <XCircle size={15} /> Reject
+                              </button>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </td>
+                    {/* Sign Up Date */}
+                    <td>{formatDate(user.created_at)}</td>
+                    {/* Current Mode */}
+                    <td>
+                      <div className="flex flex-col gap-1">
+                        {/* Current Mode Badge */}
+                        {userWinModes[user.id] === "WIN" && (
+                          <span className="px-2 py-1 rounded-lg bg-green-800 text-green-300 font-bold text-xs shadow mb-1">WIN</span>
+                        )}
+                        {userWinModes[user.id] === "LOSE" && (
+                          <span className="px-2 py-1 rounded-lg bg-red-900 text-red-300 font-bold text-xs shadow mb-1">LOSE</span>
+                        )}
+                        {!userWinModes[user.id] && (
+                          <span className="px-2 py-1 rounded-lg bg-gray-800 text-gray-400 font-semibold text-xs shadow mb-1">DEFAULT</span>
+                        )}
+                        {/* Win/Lose Toggle Buttons */}
+                        <div className="flex gap-1 mt-1">
+                          <button
+                            onClick={() => setUserWinMode(user.id, userWinModes[user.id] === "WIN" ? null : "WIN")}
+                            className={`px-2 py-1 rounded-lg text-xs font-bold shadow transition flex items-center gap-1 ${
+                              userWinModes[user.id] === "WIN"
+                                ? "bg-gradient-to-r from-[#16d79c] to-[#ffd700] text-[#232836] ring-2 ring-[#16d79c66]"
+                                : "bg-[#18241a] text-green-300"
+                            }`}
+                            disabled={actionLoading === user.id + "-winmode"}
+                          >
+                            {userWinModes[user.id] === "WIN" ? <BadgeCheck size={14} /> : null}
+                            {userWinModes[user.id] === "WIN" ? "Auto Win" : "Set Win"}
+                          </button>
+                          <button
+                            onClick={() => setUserWinMode(user.id, userWinModes[user.id] === "LOSE" ? null : "LOSE")}
+                            className={`px-2 py-1 rounded-lg text-xs font-bold shadow transition flex items-center gap-1 ${
+                              userWinModes[user.id] === "LOSE"
+                                ? "bg-gradient-to-r from-[#f34e6d] to-[#ffd700] text-[#232836] ring-2 ring-[#ffd70066]"
+                                : "bg-[#24181a] text-red-300"
+                            }`}
+                            disabled={actionLoading === user.id + "-winmode"}
+                          >
+                            {userWinModes[user.id] === "LOSE" ? <XCircle size={14} /> : null}
+                            {userWinModes[user.id] === "LOSE" ? "Auto Lose" : "Set Lose"}
+                          </button>
+                        </div>
+                      </div>
+                    </td>
+                    {/* Actions */}
+                    <td>
+                      <button
+                        onClick={() => deleteUser(user.id)}
+                        className="px-3 py-1 bg-gradient-to-r from-[#f34e6d] to-[#ffd700] rounded-lg text-xs font-bold text-[#181b25] shadow hover:opacity-90 transition flex items-center gap-1"
+                        disabled={actionLoading === user.id + "-delete"}
+                      >
+                        <XCircle size={14} />
+                        {actionLoading === user.id + "-delete" ? <Loader2 className="animate-spin" size={14} /> : "Delete"}
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
       )}
     </div>
