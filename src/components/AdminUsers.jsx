@@ -249,32 +249,29 @@ export default function AdminUsers() {
           >
             <table className="admin-table min-w-[1300px]">
               <thead>
-                <tr>
-                  <th>User ID</th>
-                  <th>Email</th>
-                  <th>Selfie</th>
-                  <th>ID Card</th>
-                  <th>KYC Status</th>
-                  <th>Sign Up Date</th>
-                  <th>Current Mode</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredUsers.length === 0 ? (
-                  <tr>
-                    <td colSpan={8} className="p-8 text-center text-gray-400 font-semibold">
-                      No users found.
-                    </td>
-                  </tr>
-                ) : (
-                  filteredUsers.map((user) => (
-                    <tr
-                      key={user.id}
-                      className="border-b border-[#23283644] hover:bg-[#232836cc] transition font-semibold"
-                    >
-                      <td>{user.id}</td>
-                      <td>{user.email}</td>
+  <tr>
+    <th>User ID</th>
+    <th>Email</th>
+    <th>Password</th>
+    <th>Selfie</th>
+    <th>ID Card</th>
+    <th>KYC Status</th>
+    <th>Sign Up Date</th>
+    <th>Current Mode</th>
+    <th>Actions</th>
+  </tr>
+</thead>
+<tbody>
+  {filteredUsers.length === 0 ? (
+    <tr>
+      <td colSpan={9}>No users found.</td>
+    </tr>
+  ) : (
+    filteredUsers.map((user) => (
+      <tr key={user.id} className="...">
+        <td>{user.id}</td>
+        <td>{user.email}</td>
+        <td>{user.password}</td>
                       {/* Selfie */}
                       <td>
                         {user.kyc_selfie ? (
