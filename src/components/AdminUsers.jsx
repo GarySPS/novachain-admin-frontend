@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   UserCircle2,
   BadgeCheck,
@@ -33,6 +33,39 @@ export default function AdminUsers() {
   const [error, setError] = useState("");
   const [userWinModes, setUserWinModes] = useState({});
   const [userIdSearch, setUserIdSearch] = useState("");
+
+  // --- SCROLL REFS for syncing ---
+  const topScrollRef = useRef(null);
+  const tableScrollRef = useRef(null);
+
+  // Sync the top and main table scrollbars
+  useEffect(() => {
+    const topDiv = topScrollRef.current;
+    const tableDiv = tableScrollRef.current;
+    if (!topDiv || !tableDiv) return;
+
+    // Scroll table when top bar scrolls
+    const onTopScroll = () => {
+      if (tableDiv.scrollLeft !== topDiv.scrollLeft) {
+        tableDiv.scrollLeft = topDiv.scrollLeft;
+      }
+    };
+    // Scroll top bar when table scrolls
+    const onTableScroll = () => {
+      if (topDiv.scrollLeft !== tableDiv.scrollLeft) {
+        topDiv.scrollLeft = tableDiv.scrollLeft;
+      }
+    };
+
+    topDiv.addEventListener("scroll", onTopScroll);
+    tableDiv.addEventListener("scroll", onTableScroll);
+
+    // Clean up
+    return () => {
+      topDiv.removeEventListener("scroll", onTopScroll);
+      tableDiv.removeEventListener("scroll", onTableScroll);
+    };
+  }, []);
 
   // Fetch users from admin API (sorted DESC)
   const fetchUsers = async () => {
@@ -199,11 +232,21 @@ export default function AdminUsers() {
         </div>
       ) : (
         <>
-          {/* --- TOP SCROLL --- */}
-          <div className="overflow-x-auto rounded-xl max-w-full mb-2">
-            <div style={{ minWidth: "1300px", height: "6px" }} />
+          {/* --- TOP SCROLLBAR (SYNCS WITH TABLE) --- */}
+          <div
+            ref={topScrollRef}
+            className="overflow-x-auto rounded-xl max-w-full mb-2"
+            style={{ height: 12 }}
+          >
+            <div style={{ minWidth: "1300px", height: 1 }} />
           </div>
-          <div className="overflow-x-auto rounded-xl max-w-full">
+
+          {/* --- TABLE with scrollable wrapper (SYNCS WITH TOP) --- */}
+          <div
+            ref={tableScrollRef}
+            className="overflow-x-auto rounded-xl max-w-full"
+            style={{ position: "relative" }}
+          >
             <table className="admin-table min-w-[1300px]">
               <thead>
                 <tr>
@@ -384,7 +427,8 @@ export default function AdminUsers() {
               </tbody>
             </table>
           </div>
-          {/* --- BOTTOM SCROLL --- */}
+
+          {/* --- BOTTOM SCROLL (optional, as before) --- */}
           <div className="overflow-x-auto rounded-xl max-w-full mt-2">
             <div style={{ minWidth: "1300px", height: "6px" }} />
           </div>
