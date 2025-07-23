@@ -247,3 +247,9 @@ body {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;     /* Firefox */
 }
+
+/* Enable snap/drag/swipe table scrolling for AdminUsers */
+.scroll-snap-start {
+  scroll-snap-align: start;
+}
+

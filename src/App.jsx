@@ -6,11 +6,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminKYC from "./components/AdminKYC";
 import Profile from "./Profile.jsx";
 import AdminView from "./components/AdminView";
-import AdminUsers from "./components/AdminUsers";
-import NavBar from "./components/NavBar";
-import AdminTabsBar from "./components/AdminTabsBar";
+import AdminUserBalancePage from "./components/AdminUserBalancePage";
 import AdminDeposits from "./components/AdminDeposits";
-
 
 // Premium dark glass background
 const BgGradient = () => (
@@ -23,7 +20,6 @@ const BgGradient = () => (
   />
 );
 
-// Animated page wrapper
 function AnimatedPage({ children }) {
   const location = useLocation();
   return (
@@ -42,21 +38,15 @@ function AnimatedPage({ children }) {
   );
 }
 
-// Premium admin layout, including nav/tabs if you want globally:
 function AdminLayout({ children }) {
   return (
     <div className="min-h-screen w-full relative overflow-x-hidden font-sans text-slate-200 bg-transparent">
       <BgGradient />
-      <div className="relative z-10">
-        {/* Uncomment these lines to show nav/tabs everywhere */}
-        {/* <NavBar /> */}
-        {/* <AdminTabsBar /> */}
-        <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-          <div className="rounded-2xl bg-gradient-to-b from-white/5 via-[#191e29]/80 to-[#101622]/90 shadow-2xl p-6 min-h-[65vh]">
-            {children}
-          </div>
-        </main>
-      </div>
+      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <div className="rounded-2xl bg-gradient-to-b from-white/5 via-[#191e29]/80 to-[#101622]/90 shadow-2xl p-6 min-h-[65vh]">
+          {children}
+        </div>
+      </main>
     </div>
   );
 }
@@ -64,29 +54,30 @@ function AdminLayout({ children }) {
 function App() {
   const location = useLocation();
 
-  // Move token check INSIDE the component to always be up-to-date
   const Protected = ({ children }) => {
     const token = localStorage.getItem('adminToken');
     return token ? <AdminLayout>{children}</AdminLayout> : <Navigate to="/" replace />;
   };
 
   return (
-    <>
-      <BgGradient />
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<AnimatedPage><AdminLogin /></AnimatedPage>} />
-
-          <Route path="/dashboard" element={<Protected><AnimatedPage><AdminDashboard /></AnimatedPage></Protected>} />
-          <Route path="/profile" element={<Protected><AnimatedPage><Profile /></AnimatedPage></Protected>} />
-          <Route path="/admin-view" element={<Protected><AnimatedPage><AdminView /></AnimatedPage></Protected>} />
-          <Route path="/users" element={<Protected><AnimatedPage><AdminUsers /></AnimatedPage></Protected>} />
-          <Route path="/kyc" element={<Protected><AnimatedPage><AdminKYC /></AnimatedPage></Protected>} />
-          <Route path="/deposits" element={<Protected><AnimatedPage><AdminDeposits /></AnimatedPage></Protected>} />
-          
-        </Routes>
-      </AnimatePresence>
-    </>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<AnimatedPage><AdminLogin /></AnimatedPage>} />
+        <Route path="/dashboard" element={<Protected><AnimatedPage><AdminDashboard /></AnimatedPage></Protected>} />
+        <Route path="/profile" element={<Protected><AnimatedPage><Profile /></AnimatedPage></Protected>} />
+        <Route path="/admin-view" element={<Protected><AnimatedPage><AdminView /></AnimatedPage></Protected>} />
+        <Route path="/users" element={
+          <Protected>
+            <AnimatedPage>
+              <AdminUserBalancePage />
+            </AnimatedPage>
+          </Protected>
+        } />
+        <Route path="/kyc" element={<Protected><AnimatedPage><AdminKYC /></AnimatedPage></Protected>} />
+        <Route path="/deposits" element={<Protected><AnimatedPage><AdminDeposits /></AnimatedPage></Protected>} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </AnimatePresence>
   );
 }
 

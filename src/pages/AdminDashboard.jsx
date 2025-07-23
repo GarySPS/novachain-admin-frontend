@@ -4,16 +4,18 @@ import AdminUsers from "../components/AdminUsers";
 import AdminTrades from "../components/AdminTrades";
 import AdminDeposits from "../components/AdminDeposits";
 import AdminWithdrawals from "../components/AdminWithdrawals";
-import DepositWalletSettings from "../components/DepositWalletSettings"; 
+import DepositWalletSettings from "../components/DepositWalletSettings";
+import AdminUserBalancePage from "../components/AdminUserBalancePage";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, TrendingUp, DollarSign, Settings, Banknote } from "lucide-react";
+import { Users, TrendingUp, DollarSign, Settings, Banknote, Wallet } from "lucide-react";
 
 // Premium tab data with icons
 const tabList = [
   { key: "users", label: "Users", icon: <Users size={18} className="mr-1 text-[#16d79c]" /> },
+  { key: "userBalance", label: "User Balance", icon: <Wallet size={18} className="mr-1 text-[#86e7fd]" /> }, // <-- User Balance Tab
   { key: "trades", label: "Trades", icon: <TrendingUp size={18} className="mr-1 text-[#ffd700]" /> },
   { key: "deposits", label: "Deposits", icon: <DollarSign size={18} className="mr-1 text-[#2dd4bf]" /> },
-  { key: "walletSettings", label: "Deposit Settings", icon: <Settings size={18} className="mr-1 text-[#3af0ff]" /> }, 
+  { key: "walletSettings", label: "Deposit Settings", icon: <Settings size={18} className="mr-1 text-[#3af0ff]" /> },
   { key: "withdrawals", label: "Withdrawals", icon: <Banknote size={18} className="mr-1 text-[#f34e6d]" /> },
 ];
 
@@ -94,6 +96,20 @@ export default function AdminDashboard() {
               <AdminUsers />
             </motion.div>
           )}
+
+          {activeTab === "userBalance" && (
+            <motion.div
+              key="userBalance"
+              initial={{ opacity: 0, y: 32 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -32 }}
+              transition={{ duration: 0.32, ease: "easeOut" }}
+              className="w-full"
+            >
+              <AdminUserBalancePage />
+            </motion.div>
+          )}
+
           {activeTab === "trades" && (
             <motion.div
               key="trades"
@@ -106,6 +122,7 @@ export default function AdminDashboard() {
               <AdminTrades />
             </motion.div>
           )}
+
           {activeTab === "deposits" && (
             <motion.div
               key="deposits"
@@ -118,7 +135,7 @@ export default function AdminDashboard() {
               <AdminDeposits />
             </motion.div>
           )}
-          
+
           {activeTab === "walletSettings" && (
             <motion.div
               key="walletSettings"
@@ -131,7 +148,7 @@ export default function AdminDashboard() {
               <DepositWalletSettings />
             </motion.div>
           )}
-   
+
           {activeTab === "withdrawals" && (
             <motion.div
               key="withdrawals"
