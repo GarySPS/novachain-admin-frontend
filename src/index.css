@@ -254,3 +254,12 @@ body {
   scroll-snap-align: start;
 }
 
+/* REMOVE ALL background-image from the login card (fixes the demo circle art) */
+.backdrop-blur-xl,
+.bg-gradient-to-br {
+  background-image: none !important;
+}
+.backdrop-blur-xl {
+  background: rgba(28, 34, 50, 0.94) !important;
+  backdrop-filter: blur(12px) !important;
+}
