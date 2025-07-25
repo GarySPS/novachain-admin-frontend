@@ -43,17 +43,19 @@ export default function AdminLogin() {
       }}>
       <div className="flex-1 flex justify-center items-center z-10">
         <div
-          className="backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl px-10 py-14 max-w-[380px] w-full mx-6"
-          style={{
-            background: "rgba(24,28,40,0.94)",
-            boxShadow: "0 6px 36px #0007",
-            backdropFilter: "blur(12px)"
-          }}
-        >
+  className="backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl px-10 py-14 max-w-[380px] w-full mx-6"
+  style={{
+    background: "rgba(28,34,50,0.94)",        // <- dark, clean, NO YELLOW/GREEN!
+    boxShadow: "0 6px 36px #0007",
+    backdropFilter: "blur(12px)",
+    backgroundImage: "none"                    // <- THIS REMOVES ALL DEMO SVGs!
+  }}
+>
           <div className="flex flex-col items-center mb-8">
-            <span className="rounded-full bg-gradient-to-tr from-[#ffd700]/90 to-[#16d79c]/80 p-4 mb-2 shadow-lg">
-              <KeyRound size={38} className="text-[#23243a]/80" />
-            </span>
+            <span className="rounded-full bg-[#23243a] p-4 mb-2 shadow-lg">
+  <KeyRound size={38} className="text-[#ffd700]" />
+</span>
+
             <h1 className="text-2xl font-black text-white/90 mb-2 text-center drop-shadow-lg tracking-tight">
               Admin Login
             </h1>
