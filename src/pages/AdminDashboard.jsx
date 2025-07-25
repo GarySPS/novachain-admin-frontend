@@ -75,7 +75,14 @@ export default function AdminDashboard() {
       </div>
 
       {/* Premium Glass Content Container with animation */}
-      <div className="bg-gradient-to-br from-white/5 via-[#20253b]/70 to-[#16192a]/90 rounded-2xl p-8 shadow-2xl min-h-[420px] w-full max-w-6xl border border-white/10 relative">
+      <div
+  className="backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-8 min-h-[420px] w-full max-w-6xl mx-auto relative"
+  style={{
+    background: "rgba(24,28,40,0.94)",
+    boxShadow: "0 6px 36px #0007",
+    backdropFilter: "blur(12px)"
+  }}
+>
         <AnimatePresence mode="wait">
           {activeTab === "users" && (
             <motion.div

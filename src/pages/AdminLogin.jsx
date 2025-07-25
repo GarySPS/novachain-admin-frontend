@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { KeyRound, Mail, Lock } from "lucide-react";
 import { API_BASE } from "../config";
 
-
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,10 +20,10 @@ export default function AdminLogin() {
     setLoading(true);
     try {
       const response = await fetch(`${API_BASE}/api/admin/login`, {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ email, password }),
-});
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
       const data = await response.json();
       if (!response.ok) setError(data.message || 'Login failed.');
       else {
@@ -38,10 +37,19 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-gradient-to-br from-[#181e29] via-[#23243a] to-[#101622] flex items-center"
-         style={{ background: "linear-gradient(120deg, #23243a 0%, #23243a 60%, #101622 100%)" }}>
+    <div className="relative min-h-screen w-full flex items-center"
+      style={{
+        background: "linear-gradient(120deg, #23243a 0%, #23243a 60%, #101622 100%)"
+      }}>
       <div className="flex-1 flex justify-center items-center z-10">
-        <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 via-[#191e29]/60 to-[#23243a]/70 border border-white/10 rounded-2xl shadow-2xl px-10 py-14 max-w-[380px] w-full mx-6">
+        <div
+          className="backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl px-10 py-14 max-w-[380px] w-full mx-6"
+          style={{
+            background: "rgba(24,28,40,0.94)",
+            boxShadow: "0 6px 36px #0007",
+            backdropFilter: "blur(12px)"
+          }}
+        >
           <div className="flex flex-col items-center mb-8">
             <span className="rounded-full bg-gradient-to-tr from-[#ffd700]/90 to-[#16d79c]/80 p-4 mb-2 shadow-lg">
               <KeyRound size={38} className="text-[#23243a]/80" />
@@ -49,7 +57,9 @@ export default function AdminLogin() {
             <h1 className="text-2xl font-black text-white/90 mb-2 text-center drop-shadow-lg tracking-tight">
               Admin Login
             </h1>
-            <div className="text-[15px] font-semibold text-white/40 text-center mb-1">NovaChain Admin Panel</div>
+            <div className="text-[15px] font-semibold text-white/40 text-center mb-1">
+              NovaChain Admin Panel
+            </div>
           </div>
           {error && (
             <div className="w-full bg-gradient-to-r from-[#f34e6d]/80 to-[#fbbf24]/80 text-white text-[1rem] rounded-xl py-2 px-5 mb-3 font-bold shadow-md animate-pulse text-center">
@@ -112,6 +122,6 @@ export default function AdminLogin() {
           </div>
         </div>
       </div>
-      </div>
+    </div>
   );
 }
