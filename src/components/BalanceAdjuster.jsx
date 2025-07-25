@@ -6,12 +6,11 @@ import { API_BASE } from "../config";
 export default function BalanceAdjuster({ userId, onDone }) {
   const [coin, setCoin] = useState("USDT");
   const [amount, setAmount] = useState("");
-  const [action, setAction] = useState("add"); // 'add' or 'reduce'
+  const [action, setAction] = useState("add"); // 'add', 'reduce', or 'freeze'
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
 
- const token = localStorage.getItem("adminToken");
-
+  const token = localStorage.getItem("adminToken");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,12 +19,15 @@ export default function BalanceAdjuster({ userId, onDone }) {
     try {
       let url, payload;
       if (action === "add") {
-  url = `${API_BASE}/api/admin/add-balance`;
-  payload = { user_id: userId, coin, amount };
-} else {
-  url = `${API_BASE}/api/admin/user/${userId}/reduce-balance`;
-  payload = { coin, amount };
-}
+        url = `${API_BASE}/api/admin/add-balance`;
+        payload = { user_id: userId, coin, amount };
+      } else if (action === "reduce") {
+        url = `${API_BASE}/api/admin/user/${userId}/reduce-balance`;
+        payload = { coin, amount };
+      } else if (action === "freeze") { // <--
+        url = `${API_BASE}/api/admin/freeze-balance`; // <--
+        payload = { user_id: userId, coin, amount }; // <--
+      }
       const res = await axios.post(url, payload, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -65,6 +67,7 @@ export default function BalanceAdjuster({ userId, onDone }) {
         <select value={action} onChange={e => setAction(e.target.value)} className="border rounded px-2 py-1 ml-2">
           <option value="add">Add Balance</option>
           <option value="reduce">Reduce Balance</option>
+          <option value="freeze">Freeze Balance</option> {/* <-- */}
         </select>
       </div>
       <button type="submit" disabled={loading} className="bg-blue-500 text-white px-4 py-2 rounded">
