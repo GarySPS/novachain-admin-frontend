@@ -40,8 +40,6 @@ export default function AdminLogin() {
   return (
     <div className="relative min-h-screen w-full bg-gradient-to-br from-[#181e29] via-[#23243a] to-[#101622] flex items-center"
          style={{ background: "linear-gradient(120deg, #23243a 0%, #23243a 60%, #101622 100%)" }}>
-      {/* Optional: subtle background shape */}
-      <div className="absolute left-[-100px] top-[-100px] w-[500px] h-[500px] bg-gradient-to-br from-[#ffd70044] via-[#16d79c33] to-[#181b25] rounded-full blur-3xl opacity-60 z-0" />
       <div className="flex-1 flex justify-center items-center z-10">
         <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 via-[#191e29]/60 to-[#23243a]/70 border border-white/10 rounded-2xl shadow-2xl px-10 py-14 max-w-[380px] w-full mx-6">
           <div className="flex flex-col items-center mb-8">
@@ -114,8 +112,6 @@ export default function AdminLogin() {
           </div>
         </div>
       </div>
-      {/* Optional: more glassy shapes for premium feel */}
-      <div className="absolute bottom-[-90px] right-[-90px] w-[400px] h-[400px] bg-gradient-to-tr from-[#16d79c44] to-[#ffd70022] rounded-full blur-3xl opacity-70 z-0" />
-    </div>
+      </div>
   );
 }
