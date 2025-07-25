@@ -24,9 +24,9 @@ export default function BalanceAdjuster({ userId, onDone }) {
       } else if (action === "reduce") {
         url = `${API_BASE}/api/admin/user/${userId}/reduce-balance`;
         payload = { coin, amount };
-      } else if (action === "freeze") { // <--
-        url = `${API_BASE}/api/admin/freeze-balance`; // <--
-        payload = { user_id: userId, coin, amount }; // <--
+      } else if (action === "freeze") {
+        url = `${API_BASE}/api/admin/freeze-balance`;
+        payload = { user_id: userId, coin, amount };
       }
       const res = await axios.post(url, payload, {
         headers: { Authorization: `Bearer ${token}` }
@@ -40,10 +40,24 @@ export default function BalanceAdjuster({ userId, onDone }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 rounded-xl shadow bg-white max-w-xs">
-      <div className="mb-2">
-        <label>Coin:</label>
-        <select value={coin} onChange={e => setCoin(e.target.value)} className="border rounded px-2 py-1 ml-2">
+    <form 
+      onSubmit={handleSubmit} 
+      className="bg-[#1e2434] rounded-xl shadow-lg p-6 max-w-md w-full mx-auto"
+    >
+      <h2 className="text-yellow-400 font-extrabold text-lg mb-6">
+        Manual Add/Reduce/Freeze User Balance
+      </h2>
+
+      <div className="mb-5 flex flex-col sm:flex-row items-center gap-4">
+        <label htmlFor="coin" className="text-white font-semibold w-24">
+          Coin:
+        </label>
+        <select
+          id="coin"
+          value={coin}
+          onChange={e => setCoin(e.target.value)}
+          className="flex-1 bg-[#2a3048] border border-yellow-400 rounded px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+        >
           <option value="USDT">USDT</option>
           <option value="BTC">BTC</option>
           <option value="ETH">ETH</option>
@@ -52,28 +66,53 @@ export default function BalanceAdjuster({ userId, onDone }) {
           <option value="XRP">XRP</option>
         </select>
       </div>
-      <div className="mb-2">
-        <label>Amount:</label>
+
+      <div className="mb-5 flex flex-col sm:flex-row items-center gap-4">
+        <label htmlFor="amount" className="text-white font-semibold w-24">
+          Amount:
+        </label>
         <input
+          id="amount"
           type="number"
+          min="0"
+          step="any"
           value={amount}
           onChange={e => setAmount(e.target.value)}
           required
-          className="border rounded px-2 py-1 ml-2"
+          placeholder="Enter amount"
+          className="flex-1 bg-[#2a3048] border border-yellow-400 rounded px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
         />
       </div>
-      <div className="mb-2">
-        <label>Action:</label>
-        <select value={action} onChange={e => setAction(e.target.value)} className="border rounded px-2 py-1 ml-2">
+
+      <div className="mb-6 flex flex-col sm:flex-row items-center gap-4">
+        <label htmlFor="action" className="text-white font-semibold w-24">
+          Action:
+        </label>
+        <select
+          id="action"
+          value={action}
+          onChange={e => setAction(e.target.value)}
+          className="flex-1 bg-[#2a3048] border border-yellow-400 rounded px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+        >
           <option value="add">Add Balance</option>
           <option value="reduce">Reduce Balance</option>
-          <option value="freeze">Freeze Balance</option> {/* <-- */}
+          <option value="freeze">Freeze Balance</option>
         </select>
       </div>
-      <button type="submit" disabled={loading} className="bg-blue-500 text-white px-4 py-2 rounded">
+
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full bg-gradient-to-r from-yellow-400 to-green-400 text-[#181b25] font-bold py-3 rounded-xl shadow-md hover:from-yellow-500 hover:to-green-500 active:scale-95 transition-transform"
+      >
         {loading ? "Processing..." : "Submit"}
       </button>
-      {msg && <div className="mt-2 text-sm">{msg}</div>}
+
+      {msg && (
+        <div className="mt-4 text-center text-yellow-400 font-semibold">
+          {msg}
+        </div>
+      )}
     </form>
   );
 }
