@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Loader2, CheckCircle2, XCircle, BadgeCheck, ArrowUpRight } from "lucide-react";
+import { API_BASE } from "../config";
 
-// Correct admin backend
-const API_BASE = import.meta.env.VITE_ADMIN_API_BASE || "https://novachain-admin-backend.onrender.com";
 
 export default function AdminWithdrawals() {
   const [withdrawals, setWithdrawals] = useState([]);

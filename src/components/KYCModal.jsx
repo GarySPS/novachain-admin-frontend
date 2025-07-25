@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Loader2, BadgeCheck, XCircle, Image, ShieldCheck } from "lucide-react";
-
-const ADMIN_API_BASE = "https://novachain-admin-backend.onrender.com";
-const MAIN_API_BASE = "https://novachain-backend.onrender.com";
+import { API_BASE, MAIN_API_BASE } from "../config";
 
 export default function KYCModal({ open, onClose, user, onAction }) {
   const [kyc, setKyc] = useState({ selfie: "", id_card: "" });
@@ -17,8 +15,8 @@ export default function KYCModal({ open, onClose, user, onAction }) {
         if (!res.ok) throw new Error("Could not load KYC docs");
         const data = await res.json();
         setKyc({
-          selfie: data.kyc_selfie ? `${MAIN_API_BASE}${data.kyc_selfie}` : "",
-          id_card: data.kyc_id_card ? `${MAIN_API_BASE}${data.kyc_id_card}` : "",
+          selfie: data.kyc_selfie ? (data.kyc_selfie.startsWith("http") ? data.kyc_selfie : `${MAIN_API_BASE}${data.kyc_selfie}`) : "",
+          id_card: data.kyc_id_card ? (data.kyc_id_card.startsWith("http") ? data.kyc_id_card : `${MAIN_API_BASE}${data.kyc_id_card}`) : "",
         });
       } catch {
         setKyc({ selfie: "", id_card: "" });

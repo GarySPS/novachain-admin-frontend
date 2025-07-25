@@ -1,14 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
-import {
-  UserCircle2,
-  BadgeCheck,
-  XCircle,
-  Loader2
-} from "lucide-react";
+import { UserCircle2, BadgeCheck, XCircle, Loader2 } from "lucide-react";
+import { API_BASE } from "../config";
 
-const API_BASE = "https://novachain-admin-backend.onrender.com";
 const MAIN_API_BASE = "https://novachain-backend.onrender.com";
 
+// KYC image resolver (always uses main backend for /uploads)
 function resolveKYCUrl(raw) {
   if (!raw) return null;
   if (raw.startsWith("http")) return raw;
@@ -34,7 +30,7 @@ export default function AdminUsers() {
   const [userWinModes, setUserWinModes] = useState({});
   const [userIdSearch, setUserIdSearch] = useState("");
 
-  // --- SCROLL REFS for syncing ---
+  // Scroll refs for sync
   const topScrollRef = useRef(null);
   const tableScrollRef = useRef(null);
 
@@ -44,23 +40,16 @@ export default function AdminUsers() {
     const tableDiv = tableScrollRef.current;
     if (!topDiv || !tableDiv) return;
 
-    // Scroll table when top bar scrolls
     const onTopScroll = () => {
-      if (tableDiv.scrollLeft !== topDiv.scrollLeft) {
-        tableDiv.scrollLeft = topDiv.scrollLeft;
-      }
+      if (tableDiv.scrollLeft !== topDiv.scrollLeft) tableDiv.scrollLeft = topDiv.scrollLeft;
     };
-    // Scroll top bar when table scrolls
     const onTableScroll = () => {
-      if (topDiv.scrollLeft !== tableDiv.scrollLeft) {
-        topDiv.scrollLeft = tableDiv.scrollLeft;
-      }
+      if (topDiv.scrollLeft !== tableDiv.scrollLeft) topDiv.scrollLeft = tableDiv.scrollLeft;
     };
 
     topDiv.addEventListener("scroll", onTopScroll);
     tableDiv.addEventListener("scroll", onTableScroll);
 
-    // Clean up
     return () => {
       topDiv.removeEventListener("scroll", onTopScroll);
       tableDiv.removeEventListener("scroll", onTableScroll);
@@ -73,18 +62,12 @@ export default function AdminUsers() {
     setError("");
     try {
       const token = localStorage.getItem("adminToken");
-      const adminToken = localStorage.getItem("xAdminToken");
       const res = await fetch(`${API_BASE}/api/admin/users`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "x-admin-token": adminToken,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       let data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to fetch users");
-      data = Array.isArray(data)
-        ? data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-        : [];
+      data = Array.isArray(data) ? data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) : [];
       setUsers(data);
     } catch (err) {
       setError(err.message || "Network error");
@@ -96,19 +79,11 @@ export default function AdminUsers() {
   const fetchWinModes = async () => {
     try {
       const token = localStorage.getItem("adminToken");
-      const adminToken = localStorage.getItem("xAdminToken");
-      const res = await fetch(`${API_BASE}/api/admin/users`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "x-admin-token": adminToken,
-        },
+      const res = await fetch(`${API_BASE}/api/admin/user-win-modes`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
-      let map = {};
-      (Array.isArray(data) ? data : []).forEach((u) => {
-        if (u.trade_mode) map[u.id] = u.trade_mode.toUpperCase();
-      });
-      setUserWinModes(map);
+      setUserWinModes(data || {});
     } catch {
       setUserWinModes({});
     }
@@ -120,19 +95,11 @@ export default function AdminUsers() {
     setError("");
     try {
       const token = localStorage.getItem("adminToken");
-      const res = await fetch(
-        `${API_BASE}/api/admin/users/${user_id}/trade-mode`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ mode: mode === null ? null : (mode ? mode.toUpperCase() : null) }),
-        }
-      );
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to update win mode");
+      await fetch(`${API_BASE}/api/admin/users/${user_id}/trade-mode`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ mode: mode === null ? null : mode.toUpperCase() }),
+      });
       await fetchWinModes();
     } catch (err) {
       setError(err.message || "Failed to update win mode");
@@ -145,16 +112,11 @@ export default function AdminUsers() {
     setActionLoading(user_id + "-kyc");
     try {
       const token = localStorage.getItem("adminToken");
-      const res = await fetch(`${API_BASE}/api/admin/user-kyc-status`, {
+      await fetch(`${API_BASE}/api/admin/user-kyc-status`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ user_id, kyc_status }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to update KYC status");
       await fetchUsers();
     } catch (err) {
       setError(err.message || "Failed to update KYC status");
@@ -169,12 +131,10 @@ export default function AdminUsers() {
     setError("");
     try {
       const token = localStorage.getItem("adminToken");
-      const res = await fetch(`${API_BASE}/api/admin/user/${user_id}`, {
+      await fetch(`${API_BASE}/api/admin/user/${user_id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to delete user");
       await fetchUsers();
     } catch (err) {
       setError(err.message || "Failed to delete user");
@@ -201,7 +161,7 @@ export default function AdminUsers() {
         All Users
       </h2>
 
-      {/* --- Search Box --- */}
+      {/* Search Box */}
       <div className="mb-4 flex items-center gap-2">
         <input
           type="text"
@@ -233,45 +193,37 @@ export default function AdminUsers() {
       ) : (
         <>
           {/* --- TOP SCROLLBAR (SYNCS WITH TABLE) --- */}
-          <div
-            ref={topScrollRef}
-            className="overflow-x-auto rounded-xl max-w-full mb-2"
-            style={{ height: 12 }}
-          >
+          <div ref={topScrollRef} className="overflow-x-auto rounded-xl max-w-full mb-2" style={{ height: 12 }}>
             <div style={{ minWidth: "1300px", height: 1 }} />
           </div>
 
           {/* --- TABLE with scrollable wrapper (SYNCS WITH TOP) --- */}
-          <div
-            ref={tableScrollRef}
-            className="overflow-x-auto rounded-xl max-w-full"
-            style={{ position: "relative" }}
-          >
+          <div ref={tableScrollRef} className="overflow-x-auto rounded-xl max-w-full" style={{ position: "relative" }}>
             <table className="admin-table min-w-[1300px]">
               <thead>
-  <tr>
-    <th>User ID</th>
-    <th>Email</th>
-    <th>Password</th>
-    <th>Selfie</th>
-    <th>ID Card</th>
-    <th>KYC Status</th>
-    <th>Sign Up Date</th>
-    <th>Current Mode</th>
-    <th>Actions</th>
-  </tr>
-</thead>
-<tbody>
-  {filteredUsers.length === 0 ? (
-    <tr>
-      <td colSpan={9}>No users found.</td>
-    </tr>
-  ) : (
-    filteredUsers.map((user) => (
-      <tr key={user.id} className="...">
-        <td>{user.id}</td>
-        <td>{user.email}</td>
-        <td>{user.password}</td>
+                <tr>
+                  <th>User ID</th>
+                  <th>Email</th>
+                  <th>Password</th>
+                  <th>Selfie</th>
+                  <th>ID Card</th>
+                  <th>KYC Status</th>
+                  <th>Sign Up Date</th>
+                  <th>Current Mode</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredUsers.length === 0 ? (
+                  <tr>
+                    <td colSpan={9}>No users found.</td>
+                  </tr>
+                ) : (
+                  filteredUsers.map((user) => (
+                    <tr key={user.id}>
+                      <td>{user.id}</td>
+                      <td>{user.email}</td>
+                      <td>{user.password}</td>
                       {/* Selfie */}
                       <td>
                         {user.kyc_selfie ? (
@@ -288,9 +240,7 @@ export default function AdminUsers() {
                               display: "block",
                               margin: "auto",
                             }}
-                            onError={(e) => {
-                              e.target.style.display = "none";
-                            }}
+                            onError={e => { e.target.style.display = "none"; }}
                           />
                         ) : (
                           <span className="text-gray-400 text-xs">N/A</span>
@@ -312,9 +262,7 @@ export default function AdminUsers() {
                               display: "block",
                               margin: "auto",
                             }}
-                            onError={(e) => {
-                              e.target.style.display = "none";
-                            }}
+                            onError={e => { e.target.style.display = "none"; }}
                           />
                         ) : (
                           <span className="text-gray-400 text-xs">N/A</span>

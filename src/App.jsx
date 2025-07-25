@@ -1,15 +1,17 @@
 import React from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from "framer-motion";
+import AdminBalance from "./components/AdminBalance"; 
+
+
 import AdminLogin from "./pages/AdminLogin.jsx";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminKYC from "./components/AdminKYC";
-import Profile from "./Profile.jsx";
-import AdminView from "./components/AdminView";
-import AdminUserBalancePage from "./components/AdminUserBalancePage";
+import AdminUsers from "./components/AdminUsers";
 import AdminDeposits from "./components/AdminDeposits";
+import AdminWithdrawals from "./components/AdminWithdrawals";
+import DepositWalletSettings from "./components/DepositWalletSettings";
 
-// Premium dark glass background
 const BgGradient = () => (
   <div
     className="fixed inset-0 z-0 bg-gradient-to-br from-[#1a2636] via-[#191e29] to-[#11151c] opacity-95 blur-[2px]"
@@ -64,17 +66,21 @@ function App() {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<AnimatedPage><AdminLogin /></AnimatedPage>} />
         <Route path="/dashboard" element={<Protected><AnimatedPage><AdminDashboard /></AnimatedPage></Protected>} />
-        <Route path="/profile" element={<Protected><AnimatedPage><Profile /></AnimatedPage></Protected>} />
-        <Route path="/admin-view" element={<Protected><AnimatedPage><AdminView /></AnimatedPage></Protected>} />
-        <Route path="/users" element={
-          <Protected>
-            <AnimatedPage>
-              <AdminUserBalancePage />
-            </AnimatedPage>
-          </Protected>
-        } />
+        <Route path="/users" element={<Protected><AnimatedPage><AdminUsers /></AnimatedPage></Protected>} />
         <Route path="/kyc" element={<Protected><AnimatedPage><AdminKYC /></AnimatedPage></Protected>} />
         <Route path="/deposits" element={<Protected><AnimatedPage><AdminDeposits /></AnimatedPage></Protected>} />
+        <Route path="/withdrawals" element={<Protected><AnimatedPage><AdminWithdrawals /></AnimatedPage></Protected>} />
+        <Route path="/settings" element={<Protected><AnimatedPage><DepositWalletSettings /></AnimatedPage></Protected>} />
+        <Route
+  path="/balance"
+  element={
+    <Protected>
+      <AnimatedPage>
+        <AdminBalance />
+      </AnimatedPage>
+    </Protected>
+  }
+/>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </AnimatePresence>

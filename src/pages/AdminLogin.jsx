@@ -16,11 +16,9 @@ export default function AdminLogin() {
     e.preventDefault();
     setError('');
     if (!email || !password) return setError('Please fill in both email and password.');
-    const emailRegex = /\S+@\S+\.\S+/;
-    if (!emailRegex.test(email)) return setError('Please enter a valid email address.');
     setLoading(true);
     try {
-      const response = await fetch('https://novachain-admin-backend.onrender.com/api/admin/login', {
+      const response = await fetch('https://novachain-backend.onrender.com/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -38,86 +36,59 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#28203c] via-[#403153] to-[#1a2032]">
-      <div
-        className="
-          w-full max-w-[390px] rounded-[2.5rem] shadow-2xl p-0 border-0 flex flex-col items-center
-          bg-white/10 backdrop-blur-[12px] overflow-hidden"
-        style={{
-          boxShadow: "0 8px 40px 0 rgba(44,34,68,0.32), 0 1.5px 0 #fff3 inset",
-        }}
-      >
-        <div className="w-full flex flex-col items-center px-10 py-10">
-          {/* Avatar/Logo */}
-          <div className="flex flex-col items-center gap-3 mb-5">
-            <div className="rounded-full bg-white/20 p-4 mb-2">
-              <KeyRound size={40} className="text-white/80" />
-            </div>
-            {/* Optional: <img src="..." /> */}
+    <div className="relative min-h-screen w-full bg-gradient-to-br from-[#181e29] via-[#23243a] to-[#101622] flex items-center"
+         style={{ background: "linear-gradient(120deg, #23243a 0%, #23243a 60%, #101622 100%)" }}>
+      {/* Optional: subtle background shape */}
+      <div className="absolute left-[-100px] top-[-100px] w-[500px] h-[500px] bg-gradient-to-br from-[#ffd70044] via-[#16d79c33] to-[#181b25] rounded-full blur-3xl opacity-60 z-0" />
+      <div className="flex-1 flex justify-center items-center z-10">
+        <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 via-[#191e29]/60 to-[#23243a]/70 border border-white/10 rounded-2xl shadow-2xl px-10 py-14 max-w-[380px] w-full mx-6">
+          <div className="flex flex-col items-center mb-8">
+            <span className="rounded-full bg-gradient-to-tr from-[#ffd700]/90 to-[#16d79c]/80 p-4 mb-2 shadow-lg">
+              <KeyRound size={38} className="text-[#23243a]/80" />
+            </span>
+            <h1 className="text-2xl font-black text-white/90 mb-2 text-center drop-shadow-lg tracking-tight">
+              Admin Login
+            </h1>
+            <div className="text-[15px] font-semibold text-white/40 text-center mb-1">NovaChain Admin Panel</div>
           </div>
-          {/* Title */}
-          <h1 className="text-2xl font-black text-white/90 mb-7 text-center drop-shadow-lg">
-            Secure Admin Login
-          </h1>
-
-          {/* Error Message */}
           {error && (
             <div className="w-full bg-gradient-to-r from-[#f34e6d]/80 to-[#fbbf24]/80 text-white text-[1rem] rounded-xl py-2 px-5 mb-3 font-bold shadow-md animate-pulse text-center">
               {error}
             </div>
           )}
-
-          <form className="w-full flex flex-col gap-6" onSubmit={handleSubmit} autoComplete="on">
-            {/* Email */}
-            <div className="flex flex-row items-center border-b border-white/30 focus-within:border-white/70 mb-2">
-              <Mail className="text-white/60 mr-3" size={22} />
+          <form className="flex flex-col gap-5 w-full" onSubmit={handleSubmit}>
+            <div className="flex items-center border-b border-white/25 focus-within:border-[#ffd700]">
+              <Mail className="text-white/60 mr-2" size={18} />
               <input
-                type="email"
-                id="email"
                 ref={emailRef}
-                className="w-full bg-transparent text-white/90 placeholder-white/40 py-2.5 focus:outline-none font-medium"
-                placeholder="Email ID"
+                type="email"
+                className="w-full bg-transparent text-white/90 placeholder-white/40 py-2 focus:outline-none font-medium text-base"
+                placeholder="Email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 disabled={loading}
                 autoComplete="username"
-                spellCheck="false"
               />
             </div>
-            {/* Password */}
-            <div className="flex flex-row items-center border-b border-white/30 focus-within:border-white/70 mb-2">
-              <Lock className="text-white/60 mr-3" size={22} />
+            <div className="flex items-center border-b border-white/25 focus-within:border-[#ffd700]">
+              <Lock className="text-white/60 mr-2" size={18} />
               <input
                 type="password"
-                id="password"
-                className="w-full bg-transparent text-white/90 placeholder-white/40 py-2.5 focus:outline-none font-medium"
+                className="w-full bg-transparent text-white/90 placeholder-white/40 py-2 focus:outline-none font-medium text-base"
                 placeholder="Password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 disabled={loading}
                 autoComplete="current-password"
-                spellCheck="false"
               />
             </div>
-            {/* Remember Me & Forgot Password */}
-            <div className="flex flex-row items-center justify-between mt-1">
-              <label className="flex items-center text-white/60 text-xs font-medium select-none">
-                <input type="checkbox" className="mr-2 accent-[#6cf2ea]" disabled />
-                Remember me
-              </label>
-              <span className="text-white/40 text-xs font-medium italic cursor-pointer hover:text-white/70 transition">
-                Forgot Password?
-              </span>
-            </div>
-            {/* Login Button */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-2 py-2.5 rounded-xl font-bold bg-gradient-to-r from-[#FFD700] to-[#16d79c] text-[#181b25] shadow-lg text-lg transition-all flex items-center justify-center hover:opacity-90 active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#ffd700]"
+              className="w-full mt-2 py-2.5 rounded-xl font-bold bg-gradient-to-r from-[#FFD700] to-[#16d79c] text-[#181b25] shadow-xl text-base transition-all flex items-center justify-center hover:opacity-90 active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#ffd700]"
               style={{
                 letterSpacing: ".03em",
                 boxShadow: "0 4px 24px #ffd70033",
-                minWidth: "100%",
               }}
             >
               {loading ? (
@@ -130,8 +101,19 @@ export default function AdminLogin() {
               )}
             </button>
           </form>
+          <div className="flex flex-row items-center justify-between mt-5 px-1">
+            <label className="flex items-center text-white/40 text-xs font-medium select-none">
+              <input type="checkbox" className="mr-1 accent-[#6cf2ea]" disabled />
+              Remember me
+            </label>
+            <span className="text-white/30 text-xs font-medium italic cursor-pointer hover:text-white/70 transition">
+              Forgot Password?
+            </span>
+          </div>
         </div>
       </div>
+      {/* Optional: more glassy shapes for premium feel */}
+      <div className="absolute bottom-[-90px] right-[-90px] w-[400px] h-[400px] bg-gradient-to-tr from-[#16d79c44] to-[#ffd70022] rounded-full blur-3xl opacity-70 z-0" />
     </div>
   );
 }

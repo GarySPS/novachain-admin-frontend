@@ -1,10 +1,11 @@
 /* src/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Load premium fonts (Inter, Plus Jakarta, Segoe UI, etc) */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
 
 html {
   scroll-behavior: smooth;

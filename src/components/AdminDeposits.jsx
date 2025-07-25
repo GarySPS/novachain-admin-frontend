@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CheckCircle2, XCircle, Loader2, Image } from "lucide-react";
+import { API_BASE } from "../config";
 
-// Config for API
-const API_BASE = import.meta.env.VITE_ADMIN_API_BASE || "https://novachain-admin-backend.onrender.com";
 // Supabase Storage config
 const SUPABASE_PUBLIC_URL = "https://zgnefojwdijycgcqngke.supabase.co/storage/v1/object/public/deposit";
 

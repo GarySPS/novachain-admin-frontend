@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { UserCircle2, BadgeCheck, XCircle, Loader2, Image } from "lucide-react";
-import { ADMIN_API_BASE, MAIN_API_BASE } from "../config"; // <--- ADD THIS
+import { API_BASE } from "../config";
+
 
 export default function AdminKYC() {
   const [users, setUsers] = useState([]);
@@ -8,9 +9,16 @@ export default function AdminKYC() {
   const [error, setError] = useState("");
   const [actionLoading, setActionLoading] = useState(null);
 
+  // --- Token getter
+  const getToken = () => localStorage.getItem("adminToken");
+
+  // --- Fetch individual KYC images (with token)
   const fetchUserKYC = async (userId) => {
     try {
-      const res = await fetch(`${ADMIN_API_BASE}/api/admin/user/${userId}/kyc`);
+      const token = getToken();
+      const res = await fetch(`${ADMIN_API_BASE}/api/admin/user/${userId}/kyc`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       if (!res.ok) return {};
       return await res.json();
     } catch {
@@ -18,36 +26,39 @@ export default function AdminKYC() {
     }
   };
 
+  // --- Main load (user list + KYC for each)
+  const load = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const token = getToken();
+      const res = await fetch(`${ADMIN_API_BASE}/api/admin/users`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to fetch users");
+      // For each user, fetch KYC images
+      const usersWithKYC = await Promise.all(data.map(async (u) => {
+        const kyc = await fetchUserKYC(u.id);
+        return { ...u, ...kyc };
+      }));
+      setUsers(usersWithKYC);
+    } catch (err) {
+      setError(err.message || "Network error");
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      setError("");
-      try {
-        const token = localStorage.getItem("adminToken");
-        const res = await fetch(`${ADMIN_API_BASE}/api/admin/users`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || "Failed to fetch users");
-        // For each user, fetch KYC images
-        const usersWithKYC = await Promise.all(data.map(async (u) => {
-          const kyc = await fetchUserKYC(u.id);
-          return { ...u, ...kyc };
-        }));
-        setUsers(usersWithKYC);
-      } catch (err) {
-        setError(err.message || "Network error");
-      }
-      setLoading(false);
-    };
     load();
     // eslint-disable-next-line
   }, []);
 
+  // --- Approve/Reject KYC
   const handleKYC = async (user_id, status) => {
     setActionLoading(user_id + status);
     try {
-      const token = localStorage.getItem("adminToken");
+      const token = getToken();
       const res = await fetch(`${ADMIN_API_BASE}/api/admin/user-kyc-status`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
@@ -55,8 +66,7 @@ export default function AdminKYC() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
-      // Reload after approve/reject for instant feedback
-      window.location.reload();
+      await load();   // Reload users+KYC
     } catch (err) {
       setError(err.message || "Network error");
     }

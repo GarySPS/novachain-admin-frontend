@@ -1,22 +1,18 @@
-// src/pages/AdminDashboard.jsx
 import React, { useState } from "react";
 import AdminUsers from "../components/AdminUsers";
-import AdminTrades from "../components/AdminTrades";
 import AdminDeposits from "../components/AdminDeposits";
 import AdminWithdrawals from "../components/AdminWithdrawals";
 import DepositWalletSettings from "../components/DepositWalletSettings";
-import AdminUserBalancePage from "../components/AdminUserBalancePage";
+import AdminBalance from "../components/AdminBalance"; // <-- Add this import!
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, TrendingUp, DollarSign, Settings, Banknote, Wallet } from "lucide-react";
+import { Users, DollarSign, Settings, Banknote, PlusCircle } from "lucide-react"; // <-- Add PlusCircle
 
-// Premium tab data with icons
 const tabList = [
   { key: "users", label: "Users", icon: <Users size={18} className="mr-1 text-[#16d79c]" /> },
-  { key: "userBalance", label: "User Balance", icon: <Wallet size={18} className="mr-1 text-[#86e7fd]" /> }, // <-- User Balance Tab
-  { key: "trades", label: "Trades", icon: <TrendingUp size={18} className="mr-1 text-[#ffd700]" /> },
   { key: "deposits", label: "Deposits", icon: <DollarSign size={18} className="mr-1 text-[#2dd4bf]" /> },
   { key: "walletSettings", label: "Deposit Settings", icon: <Settings size={18} className="mr-1 text-[#3af0ff]" /> },
   { key: "withdrawals", label: "Withdrawals", icon: <Banknote size={18} className="mr-1 text-[#f34e6d]" /> },
+  { key: "balance", label: "Adjust Balance", icon: <PlusCircle size={18} className="mr-1 text-[#ffd700]" /> }, // <-- Add this tab!
 ];
 
 export default function AdminDashboard() {
@@ -24,7 +20,6 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start pt-2 pb-8">
-
       {/* Premium Glass Tab Bar */}
       <div
         className="overflow-x-auto flex-nowrap mb-8 bg-gradient-to-r from-[#1a243c]/80 via-[#21253e]/90 to-[#131622]/90 rounded-2xl px-2 py-2 shadow-2xl backdrop-blur-[2.5px] w-full max-w-4xl border border-white/5 items-center no-scrollbar"
@@ -55,9 +50,7 @@ export default function AdminDashboard() {
               {tab.label}
             </button>
           ))}
-
-          <div className="flex-1"></div> {/* Pushes logout to the right */}
-
+          <div className="flex-1"></div>
           {/* LOGOUT BUTTON */}
           <button
             onClick={() => {
@@ -97,32 +90,6 @@ export default function AdminDashboard() {
             </motion.div>
           )}
 
-          {activeTab === "userBalance" && (
-            <motion.div
-              key="userBalance"
-              initial={{ opacity: 0, y: 32 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -32 }}
-              transition={{ duration: 0.32, ease: "easeOut" }}
-              className="w-full"
-            >
-              <AdminUserBalancePage />
-            </motion.div>
-          )}
-
-          {activeTab === "trades" && (
-            <motion.div
-              key="trades"
-              initial={{ opacity: 0, y: 32 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -32 }}
-              transition={{ duration: 0.32, ease: "easeOut" }}
-              className="w-full"
-            >
-              <AdminTrades />
-            </motion.div>
-          )}
-
           {activeTab === "deposits" && (
             <motion.div
               key="deposits"
@@ -159,6 +126,19 @@ export default function AdminDashboard() {
               className="w-full"
             >
               <AdminWithdrawals />
+            </motion.div>
+          )}
+
+          {activeTab === "balance" && (
+            <motion.div
+              key="balance"
+              initial={{ opacity: 0, y: 32 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -32 }}
+              transition={{ duration: 0.32, ease: "easeOut" }}
+              className="w-full"
+            >
+              <AdminBalance />
             </motion.div>
           )}
         </AnimatePresence>
