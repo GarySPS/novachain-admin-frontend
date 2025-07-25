@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { KeyRound, Mail, Lock } from "lucide-react";
+import { API_BASE } from "../config";
+
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
@@ -18,11 +20,11 @@ export default function AdminLogin() {
     if (!email || !password) return setError('Please fill in both email and password.');
     setLoading(true);
     try {
-      const response = await fetch('https://novachain-backend.onrender.com/api/admin/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(`${API_BASE}/api/admin/login`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ email, password }),
+});
       const data = await response.json();
       if (!response.ok) setError(data.message || 'Login failed.');
       else {
