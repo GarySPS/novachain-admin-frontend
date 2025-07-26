@@ -33,14 +33,15 @@ export default function AdminTrades() {
   const handleSetTradeResult = async (tradeId, result) => {
   try {
     const token = localStorage.getItem("adminToken");
-    const res = await fetch(`${API_BASE}/api/admin/trades/${tradeId}/set-result`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ result }),
-    });
+const res = await fetch(`${API_BASE}/api/admin/update-trade`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+  body: JSON.stringify({ tradeId, result }),
+});
+
     if (!res.ok) throw new Error("Failed to update trade result");
     fetchTrades();
   } catch (err) {
