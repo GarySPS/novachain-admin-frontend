@@ -75,19 +75,24 @@ export default function AdminUsers() {
     setLoading(false);
   };
 
-  // Fetch user win/lose mode map
-  const fetchWinModes = async () => {
-    try {
-      const token = localStorage.getItem("adminToken");
-      const res = await fetch(`${API_BASE}/api/admin/user-win-modes`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      setUserWinModes(data || {});
-    } catch {
-      setUserWinModes({});
-    }
-  };
+// Find and replace your current fetchWinModes with this:
+const fetchWinModes = async () => {
+  try {
+    const token = localStorage.getItem("adminToken");
+    const res = await fetch(`${API_BASE}/api/admin/user-win-modes`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    // Convert array to object map
+    const modeMap = {};
+    (Array.isArray(data) ? data : []).forEach((u) => {
+      modeMap[u.id] = u.mode;
+    });
+    setUserWinModes(modeMap);
+  } catch {
+    setUserWinModes({});
+  }
+};
 
   // Set WIN/LOSE mode for user
   const setUserWinMode = async (user_id, mode) => {
