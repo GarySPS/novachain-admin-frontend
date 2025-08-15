@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { UserCircle2, BadgeCheck, XCircle, Loader2, Image as ImageIcon } from "lucide-react";
-import { ADMIN_API_BASE } from "../config";
+import config, { ADMIN_API_BASE as ADMIN_API_BASE_NAMED } from "../config";
+const ADMIN_API_BASE = ADMIN_API_BASE_NAMED || config?.ADMIN_API_BASE;
 
 
 export default function AdminKYC() {
@@ -130,7 +131,7 @@ export default function AdminKYC() {
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1 px-2 py-1 rounded bg-[#1a2334] text-[#16d79c] font-semibold hover:bg-[#1f2937] transition"
                         >
-                          <Image size={17} className="mr-1" />
+                          <ImageIcon size={17} className="mr-1" />
                           View
                         </a>
                       ) : (
@@ -145,7 +146,7 @@ export default function AdminKYC() {
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1 px-2 py-1 rounded bg-[#1a2334] text-[#3af0ff] font-semibold hover:bg-[#1f2937] transition"
                         >
-                          <Image size={17} className="mr-1" />
+                          <ImageIcon size={17} className="mr-1" />
                           View
                         </a>
                       ) : (
