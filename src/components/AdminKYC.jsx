@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { UserCircle2, BadgeCheck, XCircle, Loader2, Image } from "lucide-react";
+import { UserCircle2, BadgeCheck, XCircle, Loader2, Image as ImageIcon } from "lucide-react";
 import { ADMIN_API_BASE } from "../config";
 
 
