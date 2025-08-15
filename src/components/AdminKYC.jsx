@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { UserCircle2, BadgeCheck, XCircle, Loader2, Image } from "lucide-react";
-import { API_BASE } from "../config";
+import { ADMIN_API_BASE } from "../config";
 
 
 export default function AdminKYC() {
@@ -59,14 +59,17 @@ export default function AdminKYC() {
     setActionLoading(user_id + status);
     try {
       const token = getToken();
-      const res = await fetch(`${ADMIN_API_BASE}/api/admin/user-kyc-status`, {
+      const res = await fetch(`${ADMIN_API_BASE}/kyc/admin/status`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ user_id, kyc_status: status }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ user_id, status }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
-      await load();   // Reload users+KYC
+      if (!res.ok) throw new Error(data.error || "Failed to update KYC");
+      await load();
     } catch (err) {
       setError(err.message || "Network error");
     }
