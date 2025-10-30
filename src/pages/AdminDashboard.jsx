@@ -164,14 +164,16 @@ export default function AdminDashboard() {
             >
               <AdminBalance />
             </motion.div>
-          )}
-        </AnimatePresence>
-        <AnimatePresence>
-      {showPasswordModal && (
-        <ChangePasswordModal onClose={() => setShowPasswordModal(false)} />
-      )}
-    </AnimatePresence>
-      </div>
-    </div>
-  );
+          )}
+        </AnimatePresence>
+      </div>
+
+      <AnimatePresence>
+        {showPasswordModal && (
+          <ChangePasswordModal onClose={() => setShowPasswordModal(false)} />
+        )}
+      </AnimatePresence>
+
+    </div>
+  );
 }
