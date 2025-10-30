@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { KeyRound, Loader2, X, ShieldCheck } from "lucide-react";
-import { ADMIN_API_BASE } from "../config";
+import { API_BASE as ADMIN_API_BASE } from "../config";
 
 export default function ChangePasswordModal({ onClose }) {
   const [oldPassword, setOldPassword] = useState("");
