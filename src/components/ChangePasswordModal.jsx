@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { KeyRound, Loader2, X, ShieldCheck } from "lucide-react";
-import { API_BASE as ADMIN_API_BASE } from "../config";
+import { API_BASE as ADMIN_API_BASE } from "../config"; // <-- Use the correct import name
 
 export default function ChangePasswordModal({ onClose }) {
   const [oldPassword, setOldPassword] = useState("");
@@ -25,7 +25,10 @@ export default function ChangePasswordModal({ onClose }) {
       return;
     }
     if (newPassword.length < 6) {
-      setMessage({ type: "error", text: "New password must be at least 6 characters." });
+      setMessage({
+        type: "error",
+        text: "New password must be at least 6 characters.",
+      });
       return;
     }
     if (newPassword !== verifyPassword) {
@@ -61,7 +64,6 @@ export default function ChangePasswordModal({ onClose }) {
       setTimeout(() => {
         onClose();
       }, 2000);
-
     } catch (err) {
       setMessage({ type: "error", text: err.message });
     } finally {
@@ -121,11 +123,12 @@ export default function ChangePasswordModal({ onClose }) {
             <label className="block text-sm font-bold text-gray-300 mb-1">
               Current Password
             </label>
+            {/* --- 💅 POLISHED INPUT --- */}
             <input
               type="password"
               value={oldPassword}
               onChange={(e) => setOldPassword(e.target.value)}
-              className="admin-input" // Use your existing style
+              className="w-full px-4 py-3 rounded-lg bg-[#2c3040] text-gray-100 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3af0ff] focus:border-transparent placeholder:text-gray-500"
               placeholder="••••••••"
             />
           </div>
@@ -134,11 +137,12 @@ export default function ChangePasswordModal({ onClose }) {
             <label className="block text-sm font-bold text-gray-300 mb-1">
               New Password
             </label>
+            {/* --- 💅 POLISHED INPUT --- */}
             <input
               type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className="admin-input"
+              className="w-full px-4 py-3 rounded-lg bg-[#2c3040] text-gray-100 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3af0ff] focus:border-transparent placeholder:text-gray-500"
               placeholder="Minimum 6 characters"
             />
           </div>
@@ -147,21 +151,23 @@ export default function ChangePasswordModal({ onClose }) {
             <label className="block text-sm font-bold text-gray-300 mb-1">
               Verify New Password
             </label>
+            {/* --- 💅 POLISHED INPUT --- */}
             <input
               type="password"
               value={verifyPassword}
               onChange={(e) => setVerifyPassword(e.target.value)}
-              className="admin-input"
+              className="w-full px-4 py-3 rounded-lg bg-[#2c3040] text-gray-100 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3af0ff] focus:border-transparent placeholder:text-gray-500"
               placeholder="••••••••"
             />
           </div>
 
           <div className="flex justify-end gap-3 pt-4">
+            {/* --- 💅 POLISHED BUTTON --- */}
             <button
               type="button"
               onClick={onClose}
               disabled={isLoading}
-              className="px-5 py-2 rounded-lg font-bold bg-gray-600/50 text-white hover:bg-gray-500/50 transition"
+              className="px-5 py-2 rounded-lg font-bold bg-[#374151] text-gray-200 hover:bg-[#4b5563] transition disabled:opacity-50"
             >
               Cancel
             </button>
