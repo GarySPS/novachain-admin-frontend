@@ -1,11 +1,13 @@
+//src>pages>AdminDashboard.jsx
 import React, { useState } from "react";
 import AdminUsers from "../components/AdminUsers";
 import AdminDeposits from "../components/AdminDeposits";
 import AdminWithdrawals from "../components/AdminWithdrawals";
 import DepositWalletSettings from "../components/DepositWalletSettings";
-import AdminBalance from "../components/AdminBalance"; // <-- Add this import!
+import AdminBalance from "../components/AdminBalance";
+import ChangePasswordModal from "../components/ChangePasswordModal";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, DollarSign, Settings, Banknote, PlusCircle } from "lucide-react"; // <-- Add PlusCircle
+import { Users, DollarSign, Settings, Banknote, PlusCircle, KeyRound } from "lucide-react";
 
 const tabList = [
   { key: "users", label: "Users", icon: <Users size={18} className="mr-1 text-[#16d79c]" /> },
@@ -17,6 +19,7 @@ const tabList = [
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("users");
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start pt-2 pb-8">
@@ -51,6 +54,20 @@ export default function AdminDashboard() {
             </button>
           ))}
           <div className="flex-1"></div>
+          {/* --- ADD THIS NEW BUTTON --- */}
+          <button
+            onClick={() => setShowPasswordModal(true)}
+            className="flex items-center gap-1 px-4 py-2 rounded-xl font-extrabold text-base tracking-wide
+             transition-all duration-200 shadow-md mr-3
+             bg-gradient-to-r from-[#3af0ff] via-[#3b82f6] to-[#9333ea]
+             text-white shadow-lg hover:scale-105 hover:ring-2 hover:ring-[#3af0ffbb]"
+            style={{ letterSpacing: 1, minWidth: 120 }}
+          >
+            <KeyRound size={18} />
+            Password
+          </button>
+          {/* --- END OF NEW BUTTON --- */}
+          
           {/* LOGOUT BUTTON */}
           <button
             onClick={() => {
@@ -149,6 +166,11 @@ export default function AdminDashboard() {
             </motion.div>
           )}
         </AnimatePresence>
+        <AnimatePresence>
+      {showPasswordModal && (
+        <ChangePasswordModal onClose={() => setShowPasswordModal(false)} />
+      )}
+    </AnimatePresence>
       </div>
     </div>
   );
